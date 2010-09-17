@@ -1,3 +1,17 @@
+
+var ImageDataObject = (!!window.ImageData && typeof(window.ImageData) === 'object') ? ImageData : Object;
+ImageDataObject.prototype.getPixelData = function(x, y) {
+  var pixelIndex = ( x + y * this.width ) * 4,
+      pixelData = {
+        red   : this.data[ pixelIndex + 0 ],
+        green : this.data[ pixelIndex + 1 ],
+        blue  : this.data[ pixelIndex + 2 ],
+        alpha : this.data[ pixelIndex + 3 ] / 255
+      };
+  return pixelData;
+};
+
+
 var
   canvas,
   ctx,
@@ -51,8 +65,6 @@ var
 
     imgData = ctx.getImageData(0, 0, w, h);
 
-    console.log( imgData.getPixelData(700, 500) );
-
     ctx.clearRect( 0, 0, w, h);
 
     closerize();
@@ -69,19 +81,18 @@ var
 
     img.src = imgURL;
     img.onload = imageLoaded;
+    
+    // var id = new ImageData();
+    
+    // console.log( !!(window.ImageData) );
+
+    // for( key in document ) {
+    //   console.log( key );
+    // }
 
   }
 ;
 
-ImageData.prototype.getPixelData = function(x, y) {
-  var pixelIndex = ( x + y * this.width ) * 4,
-      pixelData = {
-        red   : this.data[ pixelIndex + 0 ],
-        green : this.data[ pixelIndex + 1 ],
-        blue  : this.data[ pixelIndex + 2 ],
-        alpha : this.data[ pixelIndex + 3 ] / 255
-      };
-  return pixelData;
-};
+
 
 window.addEventListener( 'DOMContentLoaded', docReady, false);
