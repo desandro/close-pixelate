@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>kendra</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+  
+</head>
+<body>
+
+  <h1>kendra</h1>
+
+  <canvas id="canvas"></canvas>
+
+  <script src="closerize.js"></script>
+  <script>
+    var
+      imgURL = 'img/kendra.jpg',
+      closerize = function() {
+      renderLowResShapes('square',48, 24, 0, 1);
+      renderLowResShapes('circle',48, 24, 24, 1);
+      renderLowResShapes('diamond', 12, 5.5, 0, 0.6);
+      renderLowResShapes('diamond', 12, 5.5, 6, 0.6);
+      }
+    ;
+  </script>
+
+</body>
+</html>

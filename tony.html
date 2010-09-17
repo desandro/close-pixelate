@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>tony</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+</head>
+<body>
+
+  <h1>tony</h1>
+
+  <canvas id="canvas"></canvas>
+
+  <script src="closerize.js"></script>
+  <script>
+    var
+      imgURL = 'img/tony.jpg',
+      closerize = function() {
+        renderLowResShapes( 'diamond', 32, 17, 0, 1);
+        renderLowResShapes( 'diamond', 32, 16, 16, 1);
+        renderLowResShapes( 'circle', 16, 8, 8, .5);
+      }
+    ;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+canvas {
+  border: 1px solid #CCC;
+  background-color: black;
+}

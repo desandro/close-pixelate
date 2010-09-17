@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>sammie</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+  <style>
+    #canvas {
+      background: white;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>sammie</h1>
+
+  <canvas id="canvas"></canvas>
+
+  <script src="closerize.js"></script>
+  <script>
+  var
+    imgURL = 'img/sammie.jpg',
+    closerize = function() {
+      renderLowResShapes( 'diamond', 64, 31, 0, 1);
+      renderLowResShapes( 'diamond', 64, 31, 32, 1);
+      renderLowResShapes( 'circle', 16, 8, 0, .5);
+      renderLowResShapes( 'circle', 16, 8, 8, .5);
+    }
+  ;
+  </script>
+
+</body>
+</html>

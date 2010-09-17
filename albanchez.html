@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>albanchez</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+</head>
+<body>
+
+  <h1>albanchez</h1>
+
+  <canvas id="canvas"></canvas>
+
+  <script src="closerize.js"></script>
+  <script>
+  var
+    imgURL = 'img/albanchez.jpg',
+    closerize = function() {
+      renderLowResShapes( 'square', 48, 24, 0, 1);
+      renderLowResShapes( 'diamond', 12, 4, 0, 1);
+      renderLowResShapes( 'diamond', 12, 4, 6, 1);
+    }
+  ;
+  </script>
+
+</body>
+</html>
