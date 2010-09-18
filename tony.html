@@ -5,24 +5,36 @@
   <title>tony</title>
 
   <link rel="stylesheet" href="style.css" media="screen" />
-
+  
 </head>
 <body>
 
   <h1>tony</h1>
 
-  <canvas id="canvas"></canvas>
+  <img id="tony" class="portrait" src="img/tony.jpg" />
 
-  <script src="closerize.js"></script>
+  <script src="close-with-canvas.js"></script>
   <script>
-    var
-      imgURL = 'img/tony.jpg',
-      closerize = function() {
-        renderLowResShapes( 'diamond', 32, 17, 0, 1);
-        renderLowResShapes( 'diamond', 32, 16, 16, 1);
-        renderLowResShapes( 'circle', 16, 8, 8, .5);
-      }
-    ;
+    var docReady = function() {
+
+      document.getElementById('tony').closeWithCanvas([
+        // { shape : 'diamond', resolution : 32, radius: 17 },
+        // { shape : 'diamond', resolution : 32, offset: 16 },
+        // { shape : 'circle', resolution : 16, offset: 8, alpha: .5 }
+        
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, radius: 16, offset: 15 },
+        { shape : 'circle', resolution : 32, radius: 13, offset: 13 },
+        { shape : 'circle', resolution : 32, radius: 9, offset: 10 },
+        { shape : 'circle', resolution : 32, radius: 6, offset: 8 }
+        // { shape : 'circle', resolution : 32, offset: 0 }
+
+
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
   </script>
 
 </body>

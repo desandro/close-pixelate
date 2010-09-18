@@ -11,19 +11,22 @@
 
   <h1>kendra</h1>
 
-  <canvas id="canvas"></canvas>
+  <img id="kendra" class="portrait" src="img/kendra.jpg" />
 
-  <script src="closerize.js"></script>
+  <script src="close-with-canvas.js"></script>
   <script>
-    var
-      imgURL = 'img/kendra.jpg',
-      closerize = function() {
-      renderLowResShapes('square',48, 24, 0, 1);
-      renderLowResShapes('circle',48, 24, 24, 1);
-      renderLowResShapes('diamond', 12, 5.5, 0, 0.6);
-      renderLowResShapes('diamond', 12, 5.5, 6, 0.6);
-      }
-    ;
+    var docReady = function() {
+
+      document.getElementById('kendra').closeWithCanvas([
+        { shape : 'square', resolution : 48 },
+        { shape : 'circle', resolution : 48, offset : 24, alpha : 1.0 },
+        { shape : 'diamond', resolution : 12, radius: 5.5, offset : 0, alpha : 0.6 },
+        { shape : 'diamond', resolution : 12, radius: 5.5, offset : 6, alpha : 0.6 }
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
   </script>
 
 </body>

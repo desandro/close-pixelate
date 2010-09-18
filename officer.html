@@ -5,24 +5,27 @@
   <title>officer</title>
 
   <link rel="stylesheet" href="style.css" media="screen" />
-
+  
 </head>
 <body>
 
   <h1>officer</h1>
 
-  <canvas id="canvas"></canvas>
+  <img id="officer" class="portrait" src="img/officer.jpg" />
 
-  <script src="closerize.js"></script>
+  <script src="close-with-canvas.js"></script>
   <script>
-  var
-    imgURL = 'img/officer.jpg',
-    closerize = function() {
-      renderLowResShapes( 'diamond', 48, 25, 0, 1);
-      renderLowResShapes( 'diamond', 48, 24, 24, 1);
-      renderLowResShapes( 'circle', 8, 3, 0, 1);
-    }
-  ;
+    var docReady = function() {
+
+      document.getElementById('officer').closeWithCanvas([
+        { shape : 'diamond', resolution : 48, radius: 25 },
+        { shape : 'diamond', resolution : 48, offset : 24 },
+        { shape : 'circle', resolution : 8, radius: 3 }
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
   </script>
 
 </body>

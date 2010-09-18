@@ -1,40 +1,22 @@
 var ROOT2 = Math.sqrt(2);
 
-// extend ImageData with getPixelData method that returns RGBa value from ImageData array/object
-var ImageDataObject = (!!window.ImageData && typeof(window.ImageData) === 'object') ? ImageData : Object;
-ImageDataObject.prototype.getPixelData = function(x, y) {
-  var pixelIndex = ( x + y * this.width ) * 4,
-      pixelData = {
-        red   : this.data[ pixelIndex + 0 ],
-        green : this.data[ pixelIndex + 1 ],
-        blue  : this.data[ pixelIndex + 2 ],
-        alpha : this.data[ pixelIndex + 3 ] / 255
-      };
-  return pixelData;
-};
-
-
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
 HTMLImageElement.prototype.closeWithCanvas = !supportsCanvas ? function(){} : function( renderOptions ) {
+  // attach render options to image
   this.renderOptions = renderOptions;
 
+  // check if image is already loaded in cache
   if ( this.complete ) {
-    this.renderCloseWithCanvas()
+    this.renderCloseWithCanvas();
   } else {
     this.onload = this.renderCloseWithCanvas;
   }
-  
 
 };
 
-HTMLImageElement.prototype.handleEvent = function (event) {
-  console.log( event )
-};
-
-HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
-  
+HTMLImageElement.prototype.renderCloseWithCanvas = function() {
 
   var parent = this.parentNode,
       w = this.width,
@@ -45,29 +27,38 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
   canvas.width = w;
   canvas.height = h;
 
+  // render image in canvas
   ctx.drawImage( this, 0, 0);
+  // get its data
   var imgData = ctx.getImageData(0, 0, w, h);
+  // clear the canvas of the image
   ctx.clearRect( 0, 0, w, h);
 
+  // console.log( imgData.getPixelData(w,h))
 
   for (var i=0, len = this.renderOptions.length; i < len; i++) {
     var opts = this.renderOptions[i],
         cols = w / opts.resolution,
         rows = h / opts.resolution,
-        diamondRadius = opts.radius / ROOT2;
+        // option defaults
+        radius = opts.radius || opts.resolution/2,
+        alpha = opts.alpha || 1,
+        offset = opts.offset || 0,
+        diamondRadius = radius / ROOT2;
     
-    for ( var row = 0; row < rows; row++ ) {
+    for ( var row = 0; row < rows; row++ ) {    
+      var y = ( row + 0.5 ) * opts.resolution + offset;
+      
       for ( var col = 0; col < cols; col++ ) {
-        var x = ( col + 0.5 ) * opts.resolution + opts.offset,
-            y = ( row + 0.5 ) * opts.resolution + opts.offset,
+        var x = ( col + 0.5 ) * opts.resolution + offset,
             pixelData = imgData.getPixelData( x, y),
-            alpha = pixelData.alpha * opts.alpha;
+            alpha = pixelData.alpha * alpha;
 
         ctx.fillStyle = 'rgba(' + pixelData.red + ',' + pixelData.green + ',' + pixelData.blue + ',' + alpha + ')';
         switch ( opts.shape ) {
           case 'circle' :
             ctx.beginPath();
-              ctx.arc ( x, y, opts.radius, 0, Math.PI*2, true);
+              ctx.arc ( x, y, radius, 0, Math.PI*2, true);
               ctx.fill();
             ctx.closePath();
             break;
@@ -78,9 +69,9 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
               ctx.fillRect(-diamondRadius, -diamondRadius, diamondRadius*2, diamondRadius*2 );
             ctx.restore();
             break;
-          // squares
+          // square
           default :
-            ctx.fillRect( x - opts.radius, y - opts.radius, opts.radius * 2, opts.radius * 2 );
+            ctx.fillRect( x - radius, y - radius, radius * 2, radius * 2 );
         }
       }
     }
@@ -95,4 +86,19 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
   parent.removeChild( this );
   
 
+};
+
+
+// Opera and Firefox don't have an ImageData singleton in window. Use Object instead
+var ImageDataObject = (!!window.ImageData && typeof(window.ImageData) === 'object') ? ImageData : Object;
+// extend ImageData with getPixelData method that returns RGBa value from ImageData array/object
+ImageDataObject.prototype.getPixelData = function(x, y) {
+  var pixelIndex = ( x + y * this.width ) * 4,
+      pixelData = {
+        red   : this.data[ pixelIndex + 0 ],
+        green : this.data[ pixelIndex + 1 ],
+        blue  : this.data[ pixelIndex + 2 ],
+        alpha : this.data[ pixelIndex + 3 ] / 255
+      };
+  return pixelData;
 };
