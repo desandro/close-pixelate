@@ -19,26 +19,33 @@ var supportsCanvas = !!document.createElement('canvas').getContext;
 
 HTMLImageElement.prototype.closeWithCanvas = !supportsCanvas ? function(){} : function( renderOptions ) {
   this.renderOptions = renderOptions;
+
+  if ( this.complete ) {
+    this.renderCloseWithCanvas()
+  } else {
+    this.onload = this.renderCloseWithCanvas;
+  }
   
-  this.onload = this.renderCloseWithCanvas;
-  
-  // console.log ( this.width )
+
+};
+
+HTMLImageElement.prototype.handleEvent = function (event) {
+  console.log( event )
 };
 
 HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
-  var image = event.target,
-      parent = image.parentNode,
-      w = image.width,
-      h = image.height,
+  
+
+  var parent = this.parentNode,
+      w = this.width,
+      h = this.height,
       canvas = document.createElement('canvas'),
       ctx = canvas.getContext('2d');
-
-
 
   canvas.width = w;
   canvas.height = h;
 
-  ctx.drawImage( image, 0, 0);
+  ctx.drawImage( this, 0, 0);
   var imgData = ctx.getImageData(0, 0, w, h);
   ctx.clearRect( 0, 0, w, h);
 
@@ -81,10 +88,11 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function(event) {
   }
   
   // copy attributes
-  canvas.className = image.className;
-  canvas.id = image.id;
+  canvas.className = this.className;
+  canvas.id = this.id;
   // add canvas and remove image
-  parent.insertBefore( canvas, image );
-  parent.removeChild( image );
+  parent.insertBefore( canvas, this );
+  parent.removeChild( this );
+  
 
 };
