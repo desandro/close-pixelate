@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>gary</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+</head>
+<body>
+
+  <h1>gary</h1>
+
+  <img id="gary" class="portrait" src="img/gary.jpg" />
+
+  <script src="close-with-canvas.js"></script>
+  <script>
+    var docReady = function() {
+
+      document.getElementById('gary').closeWithCanvas([
+        // { shape : 'circle', resolution : 16, radius: 8, offset: 0 },
+        // { shape : 'circle', resolution : 16, radius: 3, offset: 8 }
+        { shape : 'square', resolution : 16, radius: 8, offset: 0 },
+        { shape : 'circle', resolution : 16, radius: 8, offset: 8}
+      ]);
+    
+    };
+
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+</body>
+</html>

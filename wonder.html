@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>wonder</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+  
+</head>
+<body>
+
+  <h1>wonder</h1>
+
+  <img id="wonder" class="portrait" src="img/wonder.jpg" />
+
+  <script src="close-with-canvas.js"></script>
+  <script>
+    var docReady = function() {
+
+      document.getElementById('wonder').closeWithCanvas([
+        { shape: 'diamond', resolution: 24, radius: 12.3 },
+        { shape: 'diamond', resolution: 24, radius: 12.3, offset: 12 },
+        { resolution: 24, alpha: .5 }
+
+
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+</body>
+</html>

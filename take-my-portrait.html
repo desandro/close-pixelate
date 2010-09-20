@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Take My Portrait</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+</head>
+<body>
+
+  <h1>Take My Portrait</h1>
+
+  <img id="take-my-portrait" class="portrait" src="img/take-my-portrait.jpg" />
+
+  <script src="close-with-canvas.js"></script>
+  <script>
+    var res = 32,
+        renderOptions = [{
+          shape: 'square',
+          resolution: res,
+          offset: res/2
+        }];
+    
+    for ( var i = 0; i < 7; i++) {
+      var increment = i*2;
+      renderOptions.push({
+        shape: 'circle',
+        resolution: res,
+        radius: res / 2 - increment,
+        offset: increment,
+        alpha: .5
+      } , {
+        shape: 'circle',
+        resolution: res,
+        radius: res / 2 - increment,
+        offset: increment + res / 2
+      });
+    }
+
+    var docReady = function() {
+
+      document.getElementById('take-my-portrait').closeWithCanvas( renderOptions );
+    
+    };
+
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+</body>
+</html>

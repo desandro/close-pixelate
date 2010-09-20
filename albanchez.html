@@ -11,18 +11,21 @@
 
   <h1>albanchez</h1>
 
-  <canvas id="canvas"></canvas>
+  <img id="albanchez" class="portrait" src="img/albanchez.jpg" />
 
-  <script src="closerize.js"></script>
+  <script src="close-with-canvas.js"></script>
   <script>
-  var
-    imgURL = 'img/albanchez.jpg',
-    closerize = function() {
-      renderLowResShapes( 'square', 48, 24, 0, 1);
-      renderLowResShapes( 'diamond', 12, 4, 0, 1);
-      renderLowResShapes( 'diamond', 12, 4, 6, 1);
-    }
-  ;
+    var docReady = function() {
+
+      document.getElementById('albanchez').closeWithCanvas([
+        { shape : 'square', resolution : 48 },
+        { shape : 'diamond', resolution : 12, radius: 4, },
+        { shape : 'diamond', resolution : 12, radius: 4, offset : 6 }
+      ]);
+    
+    };
+
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
   </script>
 
 </body>

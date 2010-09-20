@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>kate</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+  
+</head>
+<body>
+
+  <h1>kate</h1>
+
+  <img id="kate" class="portrait" src="img/kate.jpg" />
+
+  <script src="close-with-canvas.js"></script>
+  <script>
+    var docReady = function() {
+
+      document.getElementById('kate').closeWithCanvas([
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, radius: 16, offset: 15 },
+        { shape : 'circle', resolution : 32, radius: 13, offset: 13 },
+        { shape : 'circle', resolution : 32, radius: 9, offset: 10 },
+        { shape : 'circle', resolution : 32, radius: 6, offset: 8 }
+
+
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+</body>
+</html>
