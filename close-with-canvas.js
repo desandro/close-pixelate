@@ -41,10 +41,11 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
         cols = w / opts.resolution + 1,
         rows = h / opts.resolution + 1,
         // option defaults
-        radius = opts.radius || opts.resolution/2,
+        size = opts.size || opts.resolution,
+        halfSize = size / 2,
         alpha = opts.alpha || 1,
         offset = opts.offset || 0,
-        diamondRadius = radius / ROOT2;
+        diamondSize = size / ROOT2;
     
     for ( var row = 0; row < rows; row++ ) {    
       var y = ( row - 0.5 ) * opts.resolution + offset,
@@ -61,7 +62,7 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
         switch ( opts.shape ) {
           case 'circle' :
             ctx.beginPath();
-              ctx.arc ( x, y, radius, 0, Math.PI*2, true);
+              ctx.arc ( x, y, halfSize, 0, Math.PI*2, true);
               ctx.fill();
             ctx.closePath();
             break;
@@ -69,12 +70,12 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
             ctx.save();
               ctx.translate( x, y);
               ctx.rotate(Math.PI/4);
-              ctx.fillRect(-diamondRadius, -diamondRadius, diamondRadius*2, diamondRadius*2 );
+              ctx.fillRect(-diamondSize/2, -diamondSize/2, diamondSize, diamondSize );
             ctx.restore();
             break;
           // square
           default :
-            ctx.fillRect( x - radius, y - radius, radius * 2, radius * 2 );
+            ctx.fillRect( x - halfSize, y - halfSize, size, size );
         }
       }
     }
