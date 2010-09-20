@@ -38,8 +38,8 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
 
   for (var i=0, len = this.renderOptions.length; i < len; i++) {
     var opts = this.renderOptions[i],
-        cols = w / opts.resolution,
-        rows = h / opts.resolution,
+        cols = w / opts.resolution + 1,
+        rows = h / opts.resolution + 1,
         // option defaults
         radius = opts.radius || opts.resolution/2,
         alpha = opts.alpha || 1,
@@ -47,11 +47,14 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
         diamondRadius = radius / ROOT2;
     
     for ( var row = 0; row < rows; row++ ) {    
-      var y = ( row + 0.5 ) * opts.resolution + offset;
-      
+      var y = ( row - 0.5 ) * opts.resolution + offset,
+          // normalize y so shapes around edges get color
+          pixelY = Math.max( Math.min( y, h-1), 0);
       for ( var col = 0; col < cols; col++ ) {
-        var x = ( col + 0.5 ) * opts.resolution + offset,
-            pixelData = imgData.getPixelData( x, y),
+        var x = ( col - 0.5 ) * opts.resolution + offset,
+            // normalize y so shapes around edges get color
+            pixelX = Math.max( Math.min( x, w-1), 0),
+            pixelData = imgData.getPixelData( pixelX, pixelY),
             alpha = pixelData.alpha * alpha;
 
         ctx.fillStyle = 'rgba(' + pixelData.red + ',' + pixelData.green + ',' + pixelData.blue + ',' + alpha + ')';
