@@ -47,6 +47,8 @@
       
       <div class="portrait"><img id="officer" src="img/officer.jpg" /></div>
 
+      <div class="portrait"><img id="stanley" src="img/stanley.jpg" /></div>
+
       <div class="portrait"><img id="take-my-portrait" src="img/take-my-portrait.jpg" /></div>
 
       <div class="portrait"><img id="tony" src="img/tony.jpg" /></div>
@@ -59,7 +61,7 @@
       
       <div class="portrait"><img id="kendra" src="img/kendra.jpg" /></div>
       
-      <div class="portrait"><img id="stanley" src="img/stanley.jpg" /></div>
+      <div class="portrait"><img id="gavin" src="img/gavin.jpg" /></div>
       
     </div> <!-- #content -->
     
@@ -75,6 +77,15 @@
         { shape : 'diamond', resolution : 48, size: 50 },
         { shape : 'diamond', resolution : 48, offset : 24 },
         { shape : 'circle', resolution : 8, size: 6 }
+      ]);
+      
+      // stanley
+      document.getElementById('stanley').closePixelate([
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, offset: 15 },
+        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
+        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
+        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
       ]);
       
       // take my portrait
@@ -121,14 +132,12 @@
         { shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
         { shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }
       ]);
-      
-      // stanley
-      document.getElementById('stanley').closePixelate([
-        { resolution: 32 },
-        { shape : 'circle', resolution : 32, offset: 15 },
-        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
-        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
-        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
+
+      // gavin
+      document.getElementById('gavin').closePixelate([
+        { shape : 'square', resolution : 48 },
+        { shape : 'diamond', resolution : 12, size: 8 },
+        { shape : 'diamond', resolution : 12, size: 8, offset : 6 }
       ]);
       
     };
