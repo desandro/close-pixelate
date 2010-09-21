@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Close Pixelate Examples</title>
+
+  <style media="screen">
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #222;
+      overflow-x: hidden;
+      color: #FFF;
+    }
+
+    #wrap {
+      width: 960px;
+      margin: 0 auto;
+    }
+
+    #content {
+      position: relative;
+      width: 1600px;
+      left: -320px;
+    }
+
+    .portrait > * {
+      border: 20px solid #FFF;
+      background-color: black;
+      display: block;
+      margin: 0 auto 60px;
+      -webkit-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
+         -moz-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
+           -o-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
+              box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
+    }
+    
+  </style>
+
+</head>
+<body>
+
+  <h1>Close Pixelate Examples</h1>
+  
+  <div id="wrap">
+    
+    <div id="content">
+      
+      <div class="portrait"><img id="officer" src="img/officer.jpg" /></div>
+
+      <div class="portrait"><img id="take-my-portrait" src="img/take-my-portrait.jpg" /></div>
+
+      <div class="portrait"><img id="tony" src="img/tony.jpg" /></div>
+
+      <div class="portrait"><img id="wonder" src="img/wonder.jpg" /></div>
+
+      <div class="portrait"><img id="anita" src="img/anita.jpg" /></div>
+
+      <div class="portrait"><img id="giraffe" src="img/giraffe.jpg" /></div>
+      
+      <div class="portrait"><img id="kendra" src="img/kendra.jpg" /></div>
+      
+      <div class="portrait"><img id="stanley" src="img/stanley.jpg" /></div>
+      
+    </div> <!-- #content -->
+    
+  </div> <!-- #wrap -->
+
+
+  <script src="close-pixelate.js"></script>
+  <script>
+    var docReady = function() {
+
+      // officer
+      document.getElementById('officer').closePixelate([
+        { shape : 'diamond', resolution : 48, size: 50 },
+        { shape : 'diamond', resolution : 48, offset : 24 },
+        { shape : 'circle', resolution : 8, size: 6 }
+      ]);
+      
+      // take my portrait
+      document.getElementById('take-my-portrait').closePixelate([
+        { resolution: 48 },
+        { shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
+        { shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
+        { shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }
+      ]);
+      
+      // tony
+      document.getElementById('tony').closePixelate([
+        { shape: 'circle', resolution: 32, size: 6, offset: 8 },
+        { shape: 'circle', resolution: 32, size: 9, offset: 16 },
+        { shape: 'circle', resolution: 32, size: 12, offset: 24 },
+        { shape: 'circle', resolution: 32, size: 9, offset: 0 }
+      ]);
+      
+      // wonder
+      document.getElementById('wonder').closePixelate([
+        { shape: 'diamond', resolution: 24, size: 25 },
+        { shape: 'diamond', resolution: 24, offset: 12 },
+        { resolution: 24, alpha: 0.5 }
+      ]);
+      
+      // anita
+      document.getElementById('anita').closePixelate([
+        { shape: 'square', resolution: 32 },
+        { shape: 'circle', resolution: 32, offset: 16 },
+        { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+        { shape: 'circle', resolution: 16, size: 8, offset: 0, alpha: 0.5 }
+      ]);
+      
+      // giraffe
+      document.getElementById('giraffe').closePixelate([
+        { shape : 'circle', resolution : 24 },
+        { shape : 'circle', resolution : 24, size: 9, offset: 12 }
+      ]);
+
+      // kendra
+      document.getElementById('kendra').closePixelate([
+        { shape : 'square', resolution : 48, offset: 24 },
+        { shape : 'circle', resolution : 48, offset : 0 },
+        { shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
+        { shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }
+      ]);
+      
+      // stanley
+      document.getElementById('stanley').closePixelate([
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, offset: 15 },
+        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
+        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
+        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
+      ]);
+      
+    };
+  
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+
+</body>
+</html>

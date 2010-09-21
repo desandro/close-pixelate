@@ -3,20 +3,20 @@ var ROOT2 = Math.sqrt(2);
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
-HTMLImageElement.prototype.closeWithCanvas = !supportsCanvas ? function(){} : function( renderOptions ) {
+HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : function( renderOptions ) {
   // attach render options to image
   this.renderOptions = renderOptions;
 
   // check if image is already loaded in cache
   if ( this.complete ) {
-    this.renderCloseWithCanvas();
+    this.renderClosePixels();
   } else {
-    this.onload = this.renderCloseWithCanvas;
+    this.onload = this.renderClosePixels;
   }
 
 };
 
-HTMLImageElement.prototype.renderCloseWithCanvas = function() {
+HTMLImageElement.prototype.renderClosePixels = function() {
 
   var parent = this.parentNode,
       w = this.width,
