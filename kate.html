@@ -18,12 +18,25 @@
     var docReady = function() {
 
       document.getElementById('kate').closeWithCanvas([
-        { resolution: 32 },
-        { shape : 'circle', resolution : 32, offset: 15 },
-        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
-        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
-        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
+        // { resolution: 32 },
+        // { shape : 'circle', resolution : 32, offset: 15 },
+        // { shape : 'circle', resolution : 32, size: 26, offset: 13 },
+        // { shape : 'circle', resolution : 32, size: 18, offset: 10 },
+        // { shape : 'circle', resolution : 32, size: 12, offset: 8 }
 
+        // 
+        // { shape: 'diamond', resolution: 16, alpha: 1  },
+        // { shape: 'diamond', resolution: 16, offset: 8, alpha: 1  },
+        // 
+        // { shape : 'circle', resolution : 32, alpha: .5 },
+        // { shape : 'circle', resolution : 32, size: 12, offset: 16, alpha: .5 },
+
+
+        { shape: 'square', resolution: 32  },
+        { shape: 'diamond', resolution: 32, size: 16, offset: 4, alpha: 1  },
+        { shape: 'diamond', resolution: 32, size: 16, offset: 12, alpha: 1  },
+        { shape: 'diamond', resolution: 32, size: 16, offset: 20, alpha: 1  },
+        { shape: 'diamond', resolution: 32, size: 16, offset: 28, alpha: 1  },
 
       ]);
       

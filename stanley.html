@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Stanley</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+  <style>
+/*    .portrait { background: white;}*/
+  </style>
+
+</head>
+<body>
+
+  <h1>Stanley</h1>
+
+  <img id="stanley" class="portrait" src="img/stanley.jpg" />
+
+
+  <script src="close-with-canvas.js"></script>
+  <script>
+
+    var docReady = function() {
+
+      document.getElementById('stanley').closeWithCanvas([
+        // { shape: 'square', resolution: 32  },
+        // { shape: 'diamond', resolution: 32, size: 16, offset: 4, alpha: 1  },
+        // { shape: 'diamond', resolution: 32, size: 16, offset: 12, alpha: 1  },
+        // { shape: 'diamond', resolution: 32, size: 16, offset: 20, alpha: 1  },
+        // { shape: 'diamond', resolution: 32, size: 16, offset: 28, alpha: 1  },
+
+        { resolution: 32 },
+        { shape : 'circle', resolution : 32, offset: 15 },
+        { shape : 'circle', resolution : 32, size: 26, offset: 13 },
+        { shape : 'circle', resolution : 32, size: 18, offset: 10 },
+        { shape : 'circle', resolution : 32, size: 12, offset: 8 }
+
+
+      ]);
+    
+    };
+
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+  </script>
+
+</body>
+</html>

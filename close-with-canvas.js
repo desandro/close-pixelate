@@ -34,7 +34,6 @@ HTMLImageElement.prototype.renderCloseWithCanvas = function() {
   // clear the canvas of the image
   ctx.clearRect( 0, 0, w, h);
 
-  // console.log( imgData.getPixelData(w,h))
 
   for (var i=0, len = this.renderOptions.length; i < len; i++) {
     var opts = this.renderOptions[i],
