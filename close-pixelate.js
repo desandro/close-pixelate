@@ -30,7 +30,18 @@ HTMLImageElement.prototype.renderClosePixels = function() {
   // render image in canvas
   ctx.drawImage( this, 0, 0);
   // get its data
-  var imgData = ctx.getImageData(0, 0, w, h);
+  var imgData = ctx.getImageData(0, 0, w, h).data,
+      getPixelData = function ( x, y ) {
+        var pixelIndex = ( x + y * w ) * 4;
+            pixelData = {
+              red   : imgData[ pixelIndex + 0 ],
+              green : imgData[ pixelIndex + 1 ],
+              blue  : imgData[ pixelIndex + 2 ],
+              alpha : imgData[ pixelIndex + 3 ] / 255
+            };
+        return pixelData;
+      };
+  
   // clear the canvas of the image
   ctx.clearRect( 0, 0, w, h);
 
@@ -54,7 +65,7 @@ HTMLImageElement.prototype.renderClosePixels = function() {
         var x = ( col - 0.5 ) * opts.resolution + offset,
             // normalize y so shapes around edges get color
             pixelX = Math.max( Math.min( x, w-1), 0),
-            pixelData = imgData.getPixelData( pixelX, pixelY),
+            pixelData = getPixelData( pixelX, pixelY),
             alpha = pixelData.alpha * alpha;
 
         ctx.fillStyle = 'rgba(' + pixelData.red + ',' + pixelData.green + ',' + pixelData.blue + ',' + alpha + ')';
@@ -89,19 +100,4 @@ HTMLImageElement.prototype.renderClosePixels = function() {
   parent.removeChild( this );
   
 
-};
-
-
-// Opera and Firefox don't have an ImageData singleton in window. Use Object instead
-var ImageDataObject = (!!window.ImageData && typeof(window.ImageData) === 'object') ? ImageData : Object;
-// extend ImageData with getPixelData method that returns RGBa value from ImageData array/object
-ImageDataObject.prototype.getPixelData = function(x, y) {
-  var pixelIndex = ( x + y * this.width ) * 4,
-      pixelData = {
-        red   : this.data[ pixelIndex + 0 ],
-        green : this.data[ pixelIndex + 1 ],
-        blue  : this.data[ pixelIndex + 2 ],
-        alpha : this.data[ pixelIndex + 3 ] / 255
-      };
-  return pixelData;
 };
