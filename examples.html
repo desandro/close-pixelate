@@ -4,13 +4,18 @@
   <meta charset="utf-8" />
   <title>Close Pixelate Examples</title>
 
+  <!-- IE HTML5 Shiv -->
+  <!--[if lte IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
   <style media="screen">
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #222;
+      background: #FFF;
       overflow-x: hidden;
-      color: #FFF;
+      color: #666;
     }
+
+    h1 { text-align: center; }
 
     #wrap {
       width: 960px;
@@ -22,19 +27,48 @@
       width: 1600px;
       left: -320px;
     }
+    
+    a { color: #E58;  text-decoration: none; }
+    a:hover { color: #58E; }
 
-    .portrait > * {
-      border: 20px solid #FFF;
+    article {
+      display: block;
+      margin-bottom: 6.0em;
+    }
+    
+    figure { display: block; }
+    
+    figcaption {
+      display: block;
+      text-align: center;
+      margin-bottom: 1.0em;
+      font-size: 14px;
+    }
+    
+    article pre {
+      width: 600px;
+      padding: 1.0em;
+      margin: 0 auto;
+    }
+    
+    pre, code {
+      color: #FFF;
+      background: #000;
+    }
+
+    .portrait {
       background-color: black;
       display: block;
-      margin: 0 auto 60px;
-      -webkit-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
-         -moz-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
-           -o-box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
-              box-shadow: 0 8px 30px hsla(0,0%,0%,0.5);
+      margin: 0 auto 1.0em;
+      -webkit-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
+         -moz-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
+           -o-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
+              box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
     }
     
   </style>
+  
+
 
 </head>
 <body>
@@ -45,23 +79,101 @@
     
     <div id="content">
       
-      <div class="portrait"><img id="officer" src="img/officer.jpg" /></div>
+      <article>
+        <figure>
+          <img id="officer" class="portrait" src="img/officer.jpg" alt="Chinese officer @ Shanghai downtown market by Dusan Simonovic" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/madciapka/4521134773/"><em>Chinese officer @ Shanghai downtown market</em> by Dusan Simonovic</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'diamond', resolution : 48, size: 50 },
+{ shape : 'diamond', resolution : 48, offset : 24 },
+{ shape : 'circle', resolution : 8, size: 6 }</code></pre>
+      </article>
 
-      <div class="portrait"><img id="stanley" src="img/stanley.jpg" /></div>
+      <article>
+        <figure>
+          <img id="stanley" class="portrait" src="img/stanley.jpg" alt="$2 Portrait Project: Stanley by Troy Holden" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/troyholden/4528382432/"><em>$2 Portrait Project: Stanley</em> by Troy Holden</a></figcaption>
+          <pre><code>{ resolution: 32 },
+{ shape : 'circle', resolution : 32, offset: 15 },
+{ shape : 'circle', resolution : 32, size: 26, offset: 13 },
+{ shape : 'circle', resolution : 32, size: 18, offset: 10 },
+{ shape : 'circle', resolution : 32, size: 12, offset: 8 }</code></pre>
+        </figure>
+      </article>
 
-      <div class="portrait"><img id="take-my-portrait" src="img/take-my-portrait.jpg" /></div>
 
-      <div class="portrait"><img id="tony" src="img/tony.jpg" /></div>
+      <article>
+        <figure>
+          <img id="take-my-portrait" class="portrait" src="img/take-my-portrait.jpg" alt="Take My Portrait by Hamed Saber" />
+          <figcaption>Original photo: <a href=""><em>Take My Portrait</em> by Hamed Saber</a></figcaption>
+          <pre><code>{ resolution: 48 },
+{ shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
+{ shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
+{ shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }</code></pre>
+        </figure>
+      </article>
 
-      <div class="portrait"><img id="wonder" src="img/wonder.jpg" /></div>
+      <article>
+        <figure>
+          <img id="tony" class="portrait" src="img/tony.jpg" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/jon-luke/4512534558/"><em>Tony deep in thought (B&amp;W)</em> by Jon-Luke</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'circle', resolution: 32, size: 6, offset: 8 },
+{ shape: 'circle', resolution: 32, size: 9, offset: 16 },
+{ shape: 'circle', resolution: 32, size: 12, offset: 24 },
+{ shape: 'circle', resolution: 32, size: 9, offset: 0 }</code></pre>
+      </article>
 
-      <div class="portrait"><img id="anita" src="img/anita.jpg" /></div>
+      <article>
+        <figure>
+          <img id="wonder" class="portrait" src="img/wonder.jpg" alt="Wonder by Kyrill Poole" />
+          <figcaption>Original photo: <a href=""><em>Wonder</em> by Kyrill Poole</a></figcaption>
+          <pre><code>{ shape: 'diamond', resolution: 24, size: 25 },
+{ shape: 'diamond', resolution: 24, offset: 12 },
+{ resolution: 24, alpha: 0.5 }</code></pre>
+        </figure>
+      </article>
 
-      <div class="portrait"><img id="giraffe" src="img/giraffe.jpg" /></div>
+      <article>
+        <figure>
+          <img id="anita" class="portrait" src="img/anita.jpg" alt="anita shlosse 04 c studio.es by Vincent Boiteau" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/2dogs_productions/1708261749/"><em>anita shlosse 04 &copy; studio.es</em> by Vincent Boiteau</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'square', resolution: 32 },
+{ shape: 'circle', resolution: 32, offset: 16 },
+{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="giraffe" class="portrait" src="img/giraffe.jpg" alt="Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007 by Keven Law" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/kevenlaw/1300905195/"><em>Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007</em> by Keven Law</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'circle', resolution : 24 },
+{ shape : 'circle', resolution : 24, size: 9, offset: 12 }</code></pre>
+      </article>
       
-      <div class="portrait"><img id="kendra" src="img/kendra.jpg" /></div>
+      <article>
+        <figure>
+          <img id="kendra" class="portrait" src="img/kendra.jpg" alt="Kendra by Anna Kreslavskaya" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/kreslava/4518179955/"><em>Kendra</em> by Anna Kreslavskaya</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'square', resolution : 48, offset: 24 },
+{ shape : 'circle', resolution : 48, offset : 0 },
+{ shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
+{ shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }</code></pre>
+      </article>
       
-      <div class="portrait"><img id="gavin" src="img/gavin.jpg" /></div>
+      <article>
+        <figure>
+          <img id="gavin" class="portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/troyholden/4294580760/"><em>Portrait Of A Mayor</em> by Troy Holden</a></figcaption>
+        </figure>
+        <pre><code>{ shape : 'square', resolution : 48 },
+{ shape : 'diamond', resolution : 12, size: 8 },
+{ shape : 'diamond', resolution : 12, size: 8, offset : 6 }</code></pre>
+      </article>
       
     </div> <!-- #content -->
     
@@ -70,75 +182,65 @@
 
   <script src="close-pixelate.js"></script>
   <script>
-    var docReady = function() {
-
-      // officer
-      document.getElementById('officer').closePixelate([
+    var pixelations = {
+      'officer' : [
         { shape : 'diamond', resolution : 48, size: 50 },
         { shape : 'diamond', resolution : 48, offset : 24 },
         { shape : 'circle', resolution : 8, size: 6 }
-      ]);
-      
-      // stanley
-      document.getElementById('stanley').closePixelate([
+      ],
+      'stanley' : [
         { resolution: 32 },
         { shape : 'circle', resolution : 32, offset: 15 },
         { shape : 'circle', resolution : 32, size: 26, offset: 13 },
         { shape : 'circle', resolution : 32, size: 18, offset: 10 },
         { shape : 'circle', resolution : 32, size: 12, offset: 8 }
-      ]);
-      
-      // take my portrait
-      document.getElementById('take-my-portrait').closePixelate([
+      ],
+      'take-my-portrait' : [
         { resolution: 48 },
         { shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
         { shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
         { shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }
-      ]);
-      
-      // tony
-      document.getElementById('tony').closePixelate([
+      ],
+      'tony' : [
         { shape: 'circle', resolution: 32, size: 6, offset: 8 },
         { shape: 'circle', resolution: 32, size: 9, offset: 16 },
         { shape: 'circle', resolution: 32, size: 12, offset: 24 },
         { shape: 'circle', resolution: 32, size: 9, offset: 0 }
-      ]);
-      
-      // wonder
-      document.getElementById('wonder').closePixelate([
+      ],
+      'wonder' : [
         { shape: 'diamond', resolution: 24, size: 25 },
         { shape: 'diamond', resolution: 24, offset: 12 },
         { resolution: 24, alpha: 0.5 }
-      ]);
-      
-      // anita
-      document.getElementById('anita').closePixelate([
+      ],
+      'anita' : [
         { shape: 'square', resolution: 32 },
         { shape: 'circle', resolution: 32, offset: 16 },
         { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
-        { shape: 'circle', resolution: 16, size: 8, offset: 0, alpha: 0.5 }
-      ]);
-      
-      // giraffe
-      document.getElementById('giraffe').closePixelate([
+        { shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }
+      ],
+      'giraffe' : [
         { shape : 'circle', resolution : 24 },
         { shape : 'circle', resolution : 24, size: 9, offset: 12 }
-      ]);
-
-      // kendra
-      document.getElementById('kendra').closePixelate([
+      ],
+      'kendra' : [
         { shape : 'square', resolution : 48, offset: 24 },
         { shape : 'circle', resolution : 48, offset : 0 },
         { shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
         { shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }
-      ]);
-
-      // gavin
-      document.getElementById('gavin').closePixelate([
+      ],
+      'gavin' : [
         { shape : 'square', resolution : 48 },
         { shape : 'diamond', resolution : 12, size: 8 },
         { shape : 'diamond', resolution : 12, size: 8, offset : 6 }
-      ]);
+      ]
+    };
+
+    var docReady = function() {
+
+      for ( key in pixelations ) {
+        var options = pixelations[key];
+        document.getElementById( key ).closePixelate( options );
+      }
       
     };
   
