@@ -1,29 +1,38 @@
-Gary
-http://www.flickr.com/photos/thomashawk/5000655297
+Close Pixelate
+==============
 
-Take My Portrait
-http://www.flickr.com/photos/hamed/590034637/
+Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It's basically a simple demo for canvas' [imageData](https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas) functionality. 
 
-Wonder
-http://www.flickr.com/photos/poolski/4998165230/
+Options
+-------
 
-Kate
-http://www.flickr.com/photos/-jocelyn-/5005338657/
+The function accepts an array of objects. Each object represents one rendering of the image.
 
-Stanley
-http://www.flickr.com/photos/troyholden/4528382432/
+ - `resolution` : The distance in pixels between rendered pixels. Required.
+ - `shape` : The shape of the pixel. Accepts `square`, `circle`, and `diamond`. Optional. Defaults to `square`.
+ - `size` : The size in pixels of the rendered pixel. Optional. Defaults to value of `resolution`.
+ - `offset` : A diagonal offset in pixels. Optional. Defaults to `0`.
+ - `alpha` : A decimal value for the opacity of the rendering. Optional. Defaults to `1`.
+ 
+Example Code
+------------
 
-Giraffe
-http://www.flickr.com/photos/kevenlaw/1300905195/
+This script works on any **locally hosted** image. [Browsers prevent the usage of `getImageData()` on any externally hosted image](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements).
 
+    <img src="portrait-image" src="img/portrait.jpg" />
 
-## Keepers
+Use the `closePixelate` method on the image in your script. You can control the output of the rendering by passing in an array of options.
 
-  Wonder
-  Tony
-Stanley
-  Take My Portrait
-  Kendra
-  officer
-  Giraffe
-  Anita
+    var docReady = function() {
+      document.getElementById('portrait-image').closePixelate([
+        { resolution : 24 },
+        { shape : 'circle', resolution : 24, size: 9, offset: 12, alpha: 0.5 }
+      ]);
+    };
+    window.addEventListener( 'DOMContentLoaded', docReady, false);
+
+Each set of options is an object representing one pass-through of re-rendering the original image. 
+
+The first set of options, `{ resolution : 24 }` directs the script to render a big square pixel every 24 actual pixels. The script uses the exact color value of the one single actual pixel in the center of the big square pixel. 
+
+The second set of options uses all available parameters: `{ shape : 'circle', resolution : 24, size: 9, offset: 12, alpha: 0.5 }` Like the first set, the resolution is 24 pixels. The shape of the pixels will be circles. The size of each circle is 9 pixels (each circle will have a radius of 4.5 pixels). The circles will placed down and to the right by 12 pixels in both directions. Finally all the circles will have an opacity of 0.5, or 50%.

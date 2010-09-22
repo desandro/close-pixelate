@@ -10,9 +10,10 @@
   <style media="screen">
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #FFF;
+      background: #111;
       overflow-x: hidden;
-      color: #666;
+      color: #DDD;
+      line-height: 1.3em;
     }
 
     h1 { text-align: center; }
@@ -49,21 +50,18 @@
       width: 600px;
       padding: 1.0em;
       margin: 0 auto;
+      border: 1px solid #222;
     }
     
     pre, code {
-      color: #FFF;
-      background: #000;
+      font-family: Monaco, monospace;
+      font-size: 12px;
     }
 
     .portrait {
       background-color: black;
       display: block;
       margin: 0 auto 1.0em;
-      -webkit-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
-         -moz-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
-           -o-box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
-              box-shadow: 0 8px 30px hsla(0,0%,0%,0.3);
     }
     
   </style>
@@ -93,12 +91,13 @@
         <figure>
           <img id="stanley" class="portrait" src="img/stanley.jpg" alt="$2 Portrait Project: Stanley by Troy Holden" />
           <figcaption>Original photo: <a href="http://www.flickr.com/photos/troyholden/4528382432/"><em>$2 Portrait Project: Stanley</em> by Troy Holden</a></figcaption>
-          <pre><code>{ resolution: 32 },
+        </figure>
+        <pre><code>{ resolution: 32 },
 { shape : 'circle', resolution : 32, offset: 15 },
 { shape : 'circle', resolution : 32, size: 26, offset: 13 },
 { shape : 'circle', resolution : 32, size: 18, offset: 10 },
 { shape : 'circle', resolution : 32, size: 12, offset: 8 }</code></pre>
-        </figure>
+
       </article>
 
 
@@ -106,11 +105,12 @@
         <figure>
           <img id="take-my-portrait" class="portrait" src="img/take-my-portrait.jpg" alt="Take My Portrait by Hamed Saber" />
           <figcaption>Original photo: <a href=""><em>Take My Portrait</em> by Hamed Saber</a></figcaption>
-          <pre><code>{ resolution: 48 },
+        </figure>
+        <pre><code>{ resolution: 48 },
 { shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
 { shape: 'diamond', resolution: 48, offset: 36, alpha: 0.5  },
 { shape: 'circle', resolution: 16, size: 8, offset: 4, alpha: 0.5 }</code></pre>
-        </figure>
+
       </article>
 
       <article>
@@ -128,10 +128,11 @@
         <figure>
           <img id="wonder" class="portrait" src="img/wonder.jpg" alt="Wonder by Kyrill Poole" />
           <figcaption>Original photo: <a href=""><em>Wonder</em> by Kyrill Poole</a></figcaption>
-          <pre><code>{ shape: 'diamond', resolution: 24, size: 25 },
+        </figure>
+        <pre><code>{ shape: 'diamond', resolution: 24, size: 25 },
 { shape: 'diamond', resolution: 24, offset: 12 },
 { resolution: 24, alpha: 0.5 }</code></pre>
-        </figure>
+
       </article>
 
       <article>
