@@ -3,10 +3,14 @@ Close Pixelate
 
 Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It's basically a simple demo for canvas' [imageData](https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas) functionality. 
 
+This project lives on GitHub at [github.com/desandro/close-pixelate](http://github.com/desandro/close-pixelate).
+
+Take a look at what the script is capable of in [examples.html](examples.html)
+
 Options
 -------
 
-The function accepts an array of objects. Each object represents one rendering of the image.
+The function accepts an array of objects. Each object holds a set of options.
 
  - `resolution` : The distance in pixels between rendered pixels. Required.
  - `shape` : The shape of the pixel. Accepts `square`, `circle`, and `diamond`. Optional. Defaults to `square`.
@@ -17,7 +21,7 @@ The function accepts an array of objects. Each object represents one rendering o
 Example Code
 ------------
 
-This script works on any **locally hosted** image. [Browsers prevent the usage of `getImageData()` on any externally hosted image](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements).
+This script works on any **locally hosted** image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on any externally hosted image.
 
     <img src="portrait-image" src="img/portrait.jpg" />
 
@@ -31,8 +35,8 @@ Use the `closePixelate` method on the image in your script. You can control the 
     };
     window.addEventListener( 'DOMContentLoaded', docReady, false);
 
-Each set of options is an object representing one pass-through of re-rendering the original image. 
+Each set of options is an object representing one re-rendering the original image.
 
 The first set of options, `{ resolution : 24 }` directs the script to render a big square pixel every 24 actual pixels. The script uses the exact color value of the one single actual pixel in the center of the big square pixel. 
 
-The second set of options uses all available parameters: `{ shape : 'circle', resolution : 24, size: 9, offset: 12, alpha: 0.5 }` Like the first set, the resolution is 24 pixels. The shape of the pixels will be circles. The size of each circle is 16 pixels (each circle will have a radius of 8 pixels). The circles will placed down and to the right by 12 pixels in both directions. Finally all the circles will have an opacity of 0.5, or 50%.
+The second set of options uses all available parameters: `{ shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }` Like the first set, the resolution is 24 pixels. The shape of the pixels will be circles. The size of each circle is 16 pixels (each circle will have a radius of 8 pixels). The circles will placed down and to the right by 12 pixels in both directions. Finally all the circles will have an opacity of 0.5, or 50%.
