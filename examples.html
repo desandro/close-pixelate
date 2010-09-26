@@ -238,15 +238,22 @@
 
     var docReady = function() {
 
-      for ( key in pixelations ) {
+      for ( var key in pixelations ) {
         var options = pixelations[key];
-        document.getElementById( key ).closePixelate( options );
+        async( pixelate(key, pixelations[key]) );
       }
 
     };
 
-    window.addEventListener( 'DOMContentLoaded', docReady, false);
-  </script>
+    function pixelate( id, options){
+        document.getElementById( id ).closePixelate( options );
+    }
+
+    function async( fn ){
+        setTimeout( fn, 0 );
+    }
+
+    window.addEventListener( 'DOMContentLoaded', docReady, false);  </script>
 
 
 </body>
