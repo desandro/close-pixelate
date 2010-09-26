@@ -3,17 +3,39 @@ var ROOT2 = Math.sqrt(2);
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
+var isLocalURL = (function() {
+
+    var page = document.location,
+        protocol = page.protocol,
+        domain = document.domain,
+        port = page.port ? page.port : '',
+        has_protocol_regex = /^http(?:s*)/,
+        closure = function (url) 
+        {
+            var no_protocol = !has_protocol_regex.test(url),
+                sop_string = protocol + '//' + port + domain,
+                sop_regex = new RegExp('^' + sop_string),
+                is_same_origin = sop_regex.test(url);
+
+            return no_protocol || is_same_origin;
+        };
+
+        return closure;
+})();
+
 HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : function( renderOptions ) {
+
   // attach render options to image
   this.renderOptions = renderOptions;
 
-  // check if image is already loaded in cache
-  if ( this.complete ) {
-    this.renderClosePixels();
-  } else {
-    this.onload = this.renderClosePixels;
-  }
-
+    if ( isLocalURL( this.src ) ){
+        // check if image is already loaded in cache
+        if ( this.complete ) {
+            this.renderClosePixels();
+        } else {
+            this.onload = this.renderClosePixels;
+        }
+    }
 };
 
 HTMLImageElement.prototype.renderClosePixels = function() {
