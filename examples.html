@@ -28,7 +28,7 @@
       width: 1600px;
       left: -320px;
     }
-    
+
     a { color: #E58;  text-decoration: none; }
     a:hover { color: #58E; }
 
@@ -36,23 +36,23 @@
       display: block;
       margin-bottom: 6.0em;
     }
-    
+
     figure { display: block; }
-    
+
     figcaption {
       display: block;
       text-align: center;
       margin-bottom: 1.0em;
       font-size: 14px;
     }
-    
+
     article pre {
       width: 600px;
       padding: 1.0em;
       margin: 0 auto;
       border: 1px solid #222;
     }
-    
+
     pre, code {
       font-family: Monaco, monospace;
       font-size: 12px;
@@ -63,20 +63,20 @@
       display: block;
       margin: 0 auto 1.0em;
     }
-    
+
   </style>
-  
+
 
 
 </head>
 <body>
 
   <h1>Close Pixelate Examples</h1>
-  
+
   <div id="portraits-wrap">
-    
+
     <div id="portraits">
-      
+
       <article>
         <figure>
           <img id="officer" class="portrait" src="img/officer.jpg" alt="Chinese officer @ Shanghai downtown market by Dusan Simonovic" />
@@ -154,7 +154,7 @@
         <pre><code>{ shape : 'circle', resolution : 24 },
 { shape : 'circle', resolution : 24, size: 9, offset: 12 }</code></pre>
       </article>
-      
+
       <article>
         <figure>
           <img id="kendra" class="portrait" src="img/kendra.jpg" alt="Kendra by Anna Kreslavskaya" />
@@ -165,7 +165,7 @@
 { shape : 'diamond', resolution : 16, size: 15, offset : 0, alpha : 0.6 },
 { shape : 'diamond', resolution : 16, size: 15, offset : 8, alpha : 0.6 }</code></pre>
       </article>
-      
+
       <article>
         <figure>
           <img id="gavin" class="portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
@@ -175,9 +175,9 @@
 { shape : 'diamond', resolution : 12, size: 8 },
 { shape : 'diamond', resolution : 12, size: 8, offset : 6 }</code></pre>
       </article>
-      
+
     </div> <!-- #portraits -->
-    
+
   </div> <!-- #portraits-wrap -->
 
 
@@ -242,9 +242,9 @@
         var options = pixelations[key];
         document.getElementById( key ).closePixelate( options );
       }
-      
+
     };
-  
+
     window.addEventListener( 'DOMContentLoaded', docReady, false);
   </script>
 
