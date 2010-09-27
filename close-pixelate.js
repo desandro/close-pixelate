@@ -1,5 +1,3 @@
-var ROOT2 = Math.sqrt(2);
-
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
@@ -13,7 +11,7 @@ var isLocalURL = (function() {
         sop_regex = new RegExp('^' + sop_string),
         http_regex = /^http(?:s*)/,
         data_regex = /^data:/,
-        closure = function (url) 
+        closure = function (url)
         {
             var is_local = (!http_regex.test(url)) || data_regex.test(url),
                 is_same_origin = sop_regex.test(url);
@@ -37,7 +35,7 @@ function getRemoteImageData( img_url, callback ){
       cb_name = cb_stack_name +'['+ cb_stack.length +']',
       service_url = service_root + "?url=" + escape(img_url) + "&callback=" + cb_name,
       script = document.createElement('script');
-    
+
   cb_stack.push( callback );
   script.src = service_url;
   document.body.appendChild(script);
@@ -48,7 +46,7 @@ HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : func
     var img = this,
         local_url = isLocalURL( img.src ),
         onLoadLocal = function (e){
-            img.renderClosePixels( renderOptions ) 
+            img.renderClosePixels( renderOptions )
         },
         onLoadData = function (obj)
         {
@@ -57,33 +55,26 @@ HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : func
             img.parentNode.replaceChild(new_img, img);
             new_img.closePixelate( renderOptions );
         },
-        onLoadRemote = function (e){ 
-            getRemoteImageData( img.src, onLoadData ); 
+        onLoadRemote = function (e){
+            getRemoteImageData( img.src, onLoadData );
         },
         onLoad = local_url ? onLoadLocal : onLoadRemote;
 
   img.onload = onLoad;
-  if ( local_url && img.complete ) { 
-    img.renderClosePixels( renderOptions ); 
+  if ( local_url && img.complete ) {
+    img.renderClosePixels( renderOptions );
   }
 
 };
 
 HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
 
-  var parent = this.parentNode,
-      w = this.width,
-      h = this.height,
+  var img = this,
+      parent = img.parentNode,
+      w = img.width,
+      h = img.height,
       canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d');
-
-  canvas.width = w;
-  canvas.height = h;
-
-  // render image in canvas
-  ctx.drawImage( this, 0, 0);
-  // get its data
-  var imgData = ctx.getImageData(0, 0, w, h).data,
+      ctx = canvas.getContext('2d'),
       getPixelData = function ( x, y ) {
         var pixelIndex = ( x + y * w ) * 4;
             pixelData = {
@@ -93,8 +84,20 @@ HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
               alpha : imgData[ pixelIndex + 3 ] / 255
             };
         return pixelData;
-      };
-  
+      },
+      ROOT2 = Math.sqrt(2),
+      PIm2 = Math.PI*2,
+      PId4 = Math.PI/4,
+      imgData;
+
+  canvas.width = w;
+  canvas.height = h;
+
+  // render image in canvas
+  ctx.drawImage( img, 0, 0);
+  // get its data
+  imgData = ctx.getImageData(0, 0, w, h).data;
+
   // clear the canvas of the image
   ctx.clearRect( 0, 0, w, h);
 
@@ -109,7 +112,7 @@ HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
         offset = opts.offset || 0,
         diamondSize = size / ROOT2;
 
-    for ( var row = 0; row < rows; row++ ) {    
+    for ( var row = 0; row < rows; row++ ) {
       var y = ( row - 0.5 ) * opts.resolution + offset,
           // normalize y so shapes around edges get color
           pixelY = Math.max( Math.min( y, h-1), 0);
@@ -124,14 +127,14 @@ HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
         switch ( opts.shape ) {
           case 'circle' :
             ctx.beginPath();
-              ctx.arc ( x, y, halfSize, 0, Math.PI*2, true);
+              ctx.arc ( x, y, halfSize, 0, PIm2, true);
               ctx.fill();
             ctx.closePath();
             break;
           case 'diamond' :
             ctx.save();
               ctx.translate( x, y);
-              ctx.rotate(Math.PI/4);
+              ctx.rotate(PId4);
               ctx.fillRect(-diamondSize/2, -diamondSize/2, diamondSize, diamondSize );
             ctx.restore();
             break;
@@ -141,12 +144,12 @@ HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
         }
       }
     }
-    
+
   }
 
   // copy attributes
-  canvas.className = this.className;
-  canvas.id = this.id;
+  canvas.className = img.className;
+  canvas.id = img.id;
   // add canvas and remove image
   parent.insertBefore( canvas, this );
   parent.removeChild( this );
