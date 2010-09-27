@@ -9,36 +9,67 @@ var isLocalURL = (function() {
         protocol = page.protocol,
         domain = document.domain,
         port = page.port ? page.port : '',
-        has_protocol_regex = /^http(?:s*)/,
+        sop_string = protocol + '//' + port + domain,
+        sop_regex = new RegExp('^' + sop_string),
+        http_regex = /^http(?:s*)/,
+        data_regex = /^data:/,
         closure = function (url) 
         {
-            var no_protocol = !has_protocol_regex.test(url),
-                sop_string = protocol + '//' + port + domain,
-                sop_regex = new RegExp('^' + sop_string),
+            var is_local = (!http_regex.test(url)) || data_regex.test(url),
                 is_same_origin = sop_regex.test(url);
 
-            return no_protocol || is_same_origin;
+            return is_local || is_same_origin;
         };
 
         return closure;
 })();
 
+function getRemoteImageData( img_url, callback ){
+
+  var page_url = document.location.href,
+      secure_root = "https://img-to-json.appspot.com/",
+      insecure_root = "http://img-to-json.maxnov.com/",
+      secure_regex = /^https:/,
+      is_secure = secure_regex.test(img_url) || secure_regex.test(page_url),
+      service_root = is_secure ? secure_root : insecure_root,
+      cb_stack_name = "cp_remote_image_callbacks",
+      cb_stack = cb_stack_name in window ? window[cb_stack_name] : window[cb_stack_name] = [],
+      cb_name = cb_stack_name +'['+ cb_stack.length +']',
+      service_url = service_root + "?url=" + escape(img_url) + "&callback=" + cb_name,
+      script = document.createElement('script');
+    
+  cb_stack.push( callback );
+  script.src = service_url;
+  document.body.appendChild(script);
+}
+
 HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : function( renderOptions ) {
 
-  // attach render options to image
-  this.renderOptions = renderOptions;
+    var img = this,
+        local_url = isLocalURL( img.src ),
+        onLoadLocal = function (e){
+            img.renderClosePixels( renderOptions ) 
+        },
+        onLoadData = function (obj)
+        {
+            var new_img = img.cloneNode();
+            new_img.src = obj.data;
+            img.parentNode.replaceChild(new_img, img);
+            new_img.closePixelate( renderOptions );
+        },
+        onLoadRemote = function (e){ 
+            getRemoteImageData( img.src, onLoadData ); 
+        },
+        onLoad = local_url ? onLoadLocal : onLoadRemote;
 
-    if ( isLocalURL( this.src ) ){
-        // check if image is already loaded in cache
-        if ( this.complete ) {
-            this.renderClosePixels();
-        } else {
-            this.onload = this.renderClosePixels;
-        }
-    }
+  img.onload = onLoad;
+  if ( local_url && img.complete ) { 
+    img.renderClosePixels( renderOptions ); 
+  }
+
 };
 
-HTMLImageElement.prototype.renderClosePixels = function() {
+HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
 
   var parent = this.parentNode,
       w = this.width,
@@ -67,9 +98,8 @@ HTMLImageElement.prototype.renderClosePixels = function() {
   // clear the canvas of the image
   ctx.clearRect( 0, 0, w, h);
 
-
-  for (var i=0, len = this.renderOptions.length; i < len; i++) {
-    var opts = this.renderOptions[i],
+  for (var i=0, len = renderOptions.length; i < len; i++) {
+    var opts = renderOptions[i],
         cols = w / opts.resolution + 1,
         rows = h / opts.resolution + 1,
         // option defaults
@@ -78,7 +108,7 @@ HTMLImageElement.prototype.renderClosePixels = function() {
         alpha = opts.alpha || 1,
         offset = opts.offset || 0,
         diamondSize = size / ROOT2;
-    
+
     for ( var row = 0; row < rows; row++ ) {    
       var y = ( row - 0.5 ) * opts.resolution + offset,
           // normalize y so shapes around edges get color
@@ -113,13 +143,12 @@ HTMLImageElement.prototype.renderClosePixels = function() {
     }
     
   }
-  
+
   // copy attributes
   canvas.className = this.className;
   canvas.id = this.id;
   // add canvas and remove image
   parent.insertBefore( canvas, this );
   parent.removeChild( this );
-  
 
 };

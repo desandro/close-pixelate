@@ -168,12 +168,43 @@
 
       <article>
         <figure>
-          <img id="gavin" class="portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
+          <img id="gavin" class="remote portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
           <figcaption>Original photo: <a href="http://www.flickr.com/photos/troyholden/4294580760/"><em>Portrait Of A Mayor</em> by Troy Holden</a></figcaption>
         </figure>
         <pre><code>{ shape : 'square', resolution : 48 },
 { shape : 'diamond', resolution : 12, size: 8 },
 { shape : 'diamond', resolution : 12, size: 8, offset : 6 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="london" class="portrait" src="http://farm4.static.flickr.com/3002/2758349058_ab6dc9cfdc_z.jpg?zz=1" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/anniemole/2758349058/" ><em>London Skyline from Altitude 6</em></a> by <a href="http://www.flickr.com/photos/anniemole/" data-target="external">Annie Mole</a></figcaption>
+        </figure>
+        <pre><code>{ shape: 'square', resolution: 32 },
+{ shape: 'circle', resolution: 32, offset: 16 },
+{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="sv1" class="remote portrait" src="http://farm1.static.flickr.com/54/156562452_61743d65fa_d.jpg" />
+        </figure>
+        <pre><code>{ shape: 'square', resolution: 32 },
+{ shape: 'circle', resolution: 32, offset: 16 },
+{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
+      </article>
+
+      <article>
+        <figure>
+          <img id="sv2" class="remote portrait" src="http://farm1.static.flickr.com/64/156562566_b057ab8105_z_d.jpg?zz=1" />
+        </figure>
+        <pre><code>{ shape: 'square', resolution: 32 },
+{ shape: 'circle', resolution: 32, offset: 16 },
+{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
       </article>
 
     </div> <!-- #portraits -->
@@ -232,20 +263,35 @@
       'gavin' : [
         { shape : 'square', resolution : 48 },
         { shape : 'diamond', resolution : 12, size: 8 },
-        { shape : 'diamond', resolution : 12, size: 8, offset : 6 }
+        { shape : 'diamond', resolution : 12, size: 8, offset : 6 },
+      ],
+      'london': [
+        { shape: 'square', resolution: 32 },
+        { shape: 'circle', resolution: 32, offset: 16 },
+        { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+        { shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }
+      ],
+      'sv1': [
+        { shape: 'diamond', resolution: 24, size: 25 },
+        { shape: 'diamond', resolution: 24, offset: 12 },
+        { resolution: 24, alpha: 0.5 }
+    ],
+      'sv2' : [
+        { shape : 'circle', resolution : 24 },
+        { shape : 'circle', resolution : 24, size: 9, offset: 12 }
       ]
+
     };
 
     var docReady = function() {
 
       for ( var key in pixelations ) {
-        var options = pixelations[key];
-        async( pixelate(key, pixelations[key]) );
+        async( pixelate( key, pixelations[key] ) );
       }
 
     };
 
-    function pixelate( id, options){
+    function pixelate( id, options ){
         document.getElementById( id ).closePixelate( options );
     }
 
