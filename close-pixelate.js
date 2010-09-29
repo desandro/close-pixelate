@@ -46,16 +46,19 @@ HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : func
     var img = this,
         local_url = isLocalURL( img.src ),
         onLoadLocal = function (e){
+            console.log('local');
             img.renderClosePixels( renderOptions )
         },
         onLoadData = function (obj)
         {
+            console.log('onloaddata', obj);
             var new_img = img.cloneNode();
             new_img.src = obj.data;
             img.parentNode.replaceChild(new_img, img);
             new_img.closePixelate( renderOptions );
         },
         onLoadRemote = function (e){
+            console.log('onloadremote');
             getRemoteImageData( img.src, onLoadData );
         },
         onLoad = local_url ? onLoadLocal : onLoadRemote;
@@ -70,7 +73,6 @@ HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : func
 HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
 
   var img = this,
-      parent = img.parentNode,
       w = img.width,
       h = img.height,
       canvas = document.createElement('canvas'),
@@ -151,7 +153,6 @@ HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
   canvas.className = img.className;
   canvas.id = img.id;
   // add canvas and remove image
-  parent.insertBefore( canvas, this );
-  parent.removeChild( this );
+  img.parentNode.replaceChild( canvas, img );
 
 };
