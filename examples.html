@@ -179,7 +179,7 @@
       <article>
         <figure>
           <img id="london" class="portrait" src="http://farm4.static.flickr.com/3002/2758349058_ab6dc9cfdc_z.jpg?zz=1" />
-          <figcaption>Original photo: <a href="http://www.flickr.com/photos/anniemole/2758349058/" ><em>London Skyline from Altitude 6</em></a> by <a href="http://www.flickr.com/photos/anniemole/" data-target="external">Annie Mole</a></figcaption>
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/anniemole/2758349058/" ><em>London Skyline from Altitude 6</em></a> by <a href="http://www.flickr.com/photos/anniemole/">Annie Mole</a></figcaption>
         </figure>
         <pre><code>{ shape: 'square', resolution: 32 },
 { shape: 'circle', resolution: 32, offset: 16 },
@@ -189,22 +189,11 @@
 
       <article>
         <figure>
-          <img id="sv1" class="remote portrait" src="http://farm1.static.flickr.com/54/156562452_61743d65fa_d.jpg" />
+          <img id="sv" class="remote portrait" src="http://farm1.static.flickr.com/64/156562566_b057ab8105_z_d.jpg?zz=1" />
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/jfsiii/156562566/in/set-72157594150109005/"><em>Lens flare from sunset on Bear Fence (Shenandoah National Park)</em></a> by <a href="http://twitter.com/JFSIII">JFSIII</a></figcaption>
         </figure>
-        <pre><code>{ shape: 'square', resolution: 32 },
-{ shape: 'circle', resolution: 32, offset: 16 },
-{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
-{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
-      </article>
-
-      <article>
-        <figure>
-          <img id="sv2" class="remote portrait" src="http://farm1.static.flickr.com/64/156562566_b057ab8105_z_d.jpg?zz=1" />
-        </figure>
-        <pre><code>{ shape: 'square', resolution: 32 },
-{ shape: 'circle', resolution: 32, offset: 16 },
-{ shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
-{ shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }</code></pre>
+        <pre><code>{ shape : 'circle', resolution : 24 },
+{ shape : 'circle', resolution : 24, size: 9, offset: 12 }</code></pre>
       </article>
 
     </div> <!-- #portraits -->
@@ -271,36 +260,37 @@
         { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
         { shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }
       ],
-      'sv1': [
-        { shape: 'diamond', resolution: 24, size: 25 },
-        { shape: 'diamond', resolution: 24, offset: 12 },
-        { resolution: 24, alpha: 0.5 }
-    ],
-      'sv2' : [
+      'sv' : [
         { shape : 'circle', resolution : 24 },
         { shape : 'circle', resolution : 24, size: 9, offset: 12 }
       ]
-
     };
 
     var docReady = function() {
-
       for ( var key in pixelations ) {
-        async( pixelate( key, pixelations[key] ) );
+        var curried = curry( pixelate, key, pixelations[key] );
+        async( curried );
       }
-
     };
 
     function pixelate( id, options ){
-        document.getElementById( id ).closePixelate( options );
+        var img = document.getElementById( id );
+        if (img){ img.closePixelate( options ); }
     }
 
     function async( fn ){
         setTimeout( fn, 0 );
     }
 
-    window.addEventListener( 'DOMContentLoaded', docReady, false);  </script>
+    function curry( fn, scope ){
+      var scope = scope || this;
+      var args = [].slice.call(arguments, 1);
+      return function () {
+        fn.apply(scope, args);
+      };
+    }
 
+    window.addEventListener( 'DOMContentLoaded', docReady, false);  </script>
 
 </body>
 </html>
