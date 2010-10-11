@@ -200,7 +200,7 @@
 
   </div> <!-- #portraits-wrap -->
 
-
+  <script src="remoteImage.js"></script>
   <script src="close-pixelate.js"></script>
   <script>
     var pixelations = {
@@ -267,27 +267,17 @@
     };
 
     var docReady = function() {
+
       for ( var key in pixelations ) {
-        var curried = curry( pixelate, key, pixelations[key] );
-        async( curried );
+         pixelate( key, pixelations[key] );
       }
     };
 
-    function pixelate( id, options ){
+    function pixelate( id, options )
+    {
         var img = document.getElementById( id );
-        if (img){ img.closePixelate( options ); }
-    }
-
-    function async( fn ){
-        setTimeout( fn, 0 );
-    }
-
-    function curry( fn, scope ){
-      var scope = scope || this;
-      var args = [].slice.call(arguments, 1);
-      return function () {
-        fn.apply(scope, args);
-      };
+        // if (img){ img.closePixelate( options ); }
+        if (img){ closePixelate( img, options ); }
     }
 
     window.addEventListener( 'DOMContentLoaded', docReady, false);  </script>
