@@ -1,7 +1,13 @@
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
-var isLocalURL = (function() {
+if ( supportsCanvas ){
+    HTMLImageElement.prototype.closePixelate = function ( options ) { 
+        closePixelate( this, options );
+    };
+}
+
+var hasSameOrigin = (function ( window, document ) {
 
     var page = document.location,
         protocol = page.protocol,
@@ -19,140 +25,110 @@ var isLocalURL = (function() {
             return is_local || is_same_origin;
         };
 
-        return closure;
-})();
+    return closure;
 
-function getRemoteImageData( img_url, callback ){
+})( window, document );
 
-  var page_url = document.location.href,
-      secure_root = "https://img-to-json.appspot.com/",
-      insecure_root = "http://img-to-json.maxnov.com/",
-      secure_regex = /^https:/,
-      is_secure = secure_regex.test(img_url) || secure_regex.test(page_url),
-      service_root = is_secure ? secure_root : insecure_root,
-      cb_stack_name = "cp_remote_image_callbacks",
-      cb_stack = cb_stack_name in window ? window[cb_stack_name] : window[cb_stack_name] = [],
-      cb_name = cb_stack_name +'['+ cb_stack.length +']',
-      service_url = service_root + "?url=" + escape(img_url) + "&callback=" + cb_name,
-      script = document.createElement('script');
+function closePixelate( img, renderOptions ) 
+{
+  var local_img = window.hasSameOrigin ? hasSameOrigin( img.src ) : true,
+    onLoadLocal = function ( e ) { renderClosePixels( e.target, renderOptions ) },
+    onLoadRemote = function ( e ) { closePixelate( e.target, renderOptions ); },
+    onDataLoaded = function ( obj )
+    {
+      var new_img = img.cloneNode(false);
+      new_img.addEventListener( 'load', onLoadRemote, false );
+      new_img.src = obj.data;
+      img.parentNode.replaceChild( new_img, img );
+    };
 
-  cb_stack.push( callback );
-  script.src = service_url;
-  document.body.appendChild(script);
+    if ( !local_img ) {
+      if (window.getRemoteImageData){ getRemoteImageData( img.src, onDataLoaded ); }
+    } else {
+      if (img.complete) { renderClosePixels( img, renderOptions ); } 
+      else              { img.addEventListener( 'load', onLoadLocal, false ); }
+    }
+
 }
 
-HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : function( renderOptions ) {
-
-    var img = this,
-        local_url = isLocalURL( img.src ),
-        onLoadLocal = function (e){
-            console.log('local');
-            img.renderClosePixels( renderOptions )
-        },
-        onLoadData = function (obj)
-        {
-            console.log('onloaddata', obj);
-            var new_img = img.cloneNode();
-            new_img.src = obj.data;
-            img.parentNode.replaceChild(new_img, img);
-            new_img.closePixelate( renderOptions );
-        },
-        onLoadRemote = function (e){
-            console.log('onloadremote');
-            getRemoteImageData( img.src, onLoadData );
-        },
-        onLoad = local_url ? onLoadLocal : onLoadRemote;
-
-  img.onload = onLoad;
-  if ( local_url && img.complete ) {
-    img.renderClosePixels( renderOptions );
-  }
-
-};
-
-HTMLImageElement.prototype.renderClosePixels = function( renderOptions ) {
-
-  var img = this,
-      w = img.width,
-      h = img.height,
-      canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d'),
-      getPixelData = function ( x, y ) {
-        var pixelIndex = ( x + y * w ) * 4;
-            pixelData = {
-              red   : imgData[ pixelIndex + 0 ],
-              green : imgData[ pixelIndex + 1 ],
-              blue  : imgData[ pixelIndex + 2 ],
-              alpha : imgData[ pixelIndex + 3 ] / 255
-            };
-        return pixelData;
-      },
-      ROOT2 = Math.sqrt(2),
-      PIm2 = Math.PI*2,
-      PId4 = Math.PI/4,
-      imgData;
-
-  canvas.width = w;
-  canvas.height = h;
+function renderClosePixels( img, renderOptions ) 
+{
+  var parent = img.parentNode,
+    w = img.width,
+    h = img.height,
+    canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d');
 
   // render image in canvas
-  ctx.drawImage( img, 0, 0);
-  // get its data
-  imgData = ctx.getImageData(0, 0, w, h).data;
+  canvas.width = w;
+  canvas.height = h;
+  canvas.className = img.className;
+  canvas.id = img.id;
+  ctx.drawImage( img, 0, 0 );
 
-  // clear the canvas of the image
+  // perform the Close pixelations
+  processData( ctx, renderOptions, w, h );
+
+  // add canvas and remove image
+  img.parentNode.replaceChild( canvas, img );
+}
+
+function processData( ctx, renderOptions, w, h )
+{
+  var PI2 = Math.PI*2, PI1_4 = Math.PI/4;
+  var imgData = ctx.getImageData(0, 0, w, h).data;
   ctx.clearRect( 0, 0, w, h);
 
   for (var i=0, len = renderOptions.length; i < len; i++) {
     var opts = renderOptions[i],
-        cols = w / opts.resolution + 1,
-        rows = h / opts.resolution + 1,
+      res = opts.resolution,
         // option defaults
-        size = opts.size || opts.resolution,
-        halfSize = size / 2,
-        alpha = opts.alpha || 1,
-        offset = opts.offset || 0,
-        diamondSize = size / ROOT2;
+      size = opts.size || res,
+      alpha = opts.alpha || 1,
+      offset = opts.offset || 0,
+      cols = w / res + 1,
+      rows = h / res + 1,
+      halfSize = size / 2,
+      diamondSize = size / Math.SQRT2,
+      halfDiamondSize = diamondSize / 2;
 
     for ( var row = 0; row < rows; row++ ) {
-      var y = ( row - 0.5 ) * opts.resolution + offset,
+      var y = ( row - 0.5 ) * res + offset,
           // normalize y so shapes around edges get color
-          pixelY = Math.max( Math.min( y, h-1), 0);
-      for ( var col = 0; col < cols; col++ ) {
-        var x = ( col - 0.5 ) * opts.resolution + offset,
-            // normalize y so shapes around edges get color
-            pixelX = Math.max( Math.min( x, w-1), 0),
-            pixelData = getPixelData( pixelX, pixelY),
-            alpha = pixelData.alpha * alpha;
+        pixelY = Math.max( Math.min( y, h-1), 0);
 
-        ctx.fillStyle = 'rgba(' + pixelData.red + ',' + pixelData.green + ',' + pixelData.blue + ',' + alpha + ')';
+      for ( var col = 0; col < cols; col++ ) {
+        var x = ( col - 0.5 ) * res + offset,
+          // normalize y so shapes around edges get color
+          pixelX = Math.max( Math.min( x, w-1), 0),
+          pixelIndex = ( pixelX + pixelY * w ) * 4,
+          red = imgData[ pixelIndex + 0 ],
+          green = imgData[ pixelIndex + 1 ],
+          blue = imgData[ pixelIndex + 2 ];
+
+          alpha *= (imgData[ pixelIndex + 3 ] / 255);
+          ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ alpha + ')';
+
         switch ( opts.shape ) {
           case 'circle' :
             ctx.beginPath();
-              ctx.arc ( x, y, halfSize, 0, PIm2, true);
+              ctx.arc ( x, y, halfSize, 0, PI2, true );
               ctx.fill();
             ctx.closePath();
             break;
           case 'diamond' :
             ctx.save();
-              ctx.translate( x, y);
-              ctx.rotate(PId4);
-              ctx.fillRect(-diamondSize/2, -diamondSize/2, diamondSize, diamondSize );
+              ctx.translate( x, y );
+              ctx.rotate( PI1_4 );
+              ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
             ctx.restore();
             break;
           // square
           default :
             ctx.fillRect( x - halfSize, y - halfSize, size, size );
-        }
-      }
-    }
+        } // switch
+      } // col
+    } // row
+  } // options
 
-  }
-
-  // copy attributes
-  canvas.className = img.className;
-  canvas.id = img.id;
-  // add canvas and remove image
-  img.parentNode.replaceChild( canvas, img );
-
-};
+}
