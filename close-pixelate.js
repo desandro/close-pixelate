@@ -75,14 +75,16 @@ function renderClosePixels( img, renderOptions )
 
 function processData( ctx, renderOptions, w, h )
 {
-  var PI2 = Math.PI*2, PI1_4 = Math.PI/4;
-  var imgData = ctx.getImageData(0, 0, w, h).data;
+  var PI2 = Math.PI*2, 
+    PI1_4 = Math.PI/4,
+    imgData = ctx.getImageData(0, 0, w, h).data;
+
   ctx.clearRect( 0, 0, w, h);
 
   for (var i=0, len = renderOptions.length; i < len; i++) {
     var opts = renderOptions[i],
       res = opts.resolution,
-        // option defaults
+      // option defaults
       size = opts.size || res,
       alpha = opts.alpha || 1,
       offset = opts.offset || 0,
@@ -94,7 +96,7 @@ function processData( ctx, renderOptions, w, h )
 
     for ( var row = 0; row < rows; row++ ) {
       var y = ( row - 0.5 ) * res + offset,
-          // normalize y so shapes around edges get color
+        // normalize y so shapes around edges get color
         pixelY = Math.max( Math.min( y, h-1), 0);
 
       for ( var col = 0; col < cols; col++ ) {
