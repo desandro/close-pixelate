@@ -88,19 +88,33 @@ function processData( ctx, renderOptions, w, h )
       size = opts.size || res,
       alpha = opts.alpha || 1,
       offset = opts.offset || 0,
+      offsetX = 0, 
+      offsetY = 0,
       cols = w / res + 1,
       rows = h / res + 1,
       halfSize = size / 2,
       diamondSize = size / Math.SQRT2,
-      halfDiamondSize = diamondSize / 2;
+      halfDiamondSize = diamondSize / 2, 
+      isArray = function ( o ){ return Object.prototype.toString.call( o ) === "[object Array]"; },
+      isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
+
+      if ( isObject( offset ) ){ 
+          offsetX = offset.x || 0; 
+          offsetY = offset.y || 0;
+      } else if ( isArray( offset) ){
+          offsetX = offset[0] || 0;
+          offsetY = offset[1] || 0;
+      } else {
+          offsetX = offsetY = offset;
+      }
 
     for ( var row = 0; row < rows; row++ ) {
-      var y = ( row - 0.5 ) * res + offset,
+      var y = ( row - 0.5 ) * res + offsetY,
         // normalize y so shapes around edges get color
         pixelY = Math.max( Math.min( y, h-1), 0);
 
       for ( var col = 0; col < cols; col++ ) {
-        var x = ( col - 0.5 ) * res + offset,
+        var x = ( col - 0.5 ) * res + offsetX,
           // normalize y so shapes around edges get color
           pixelX = Math.max( Math.min( x, w-1), 0),
           pixelIndex = ( pixelX + pixelY * w ) * 4,
