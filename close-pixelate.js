@@ -12,8 +12,8 @@ var hasSameOrigin = (function ( window, document ) {
     var page = document.location,
         protocol = page.protocol,
         domain = document.domain,
-        port = page.port ? page.port : '',
-        sop_string = protocol + '//' + port + domain,
+        port = page.port ? ':' + page.port : '',
+        sop_string = protocol + '//' + domain + port,
         sop_regex = new RegExp('^' + sop_string),
         http_regex = /^http(?:s*)/,
         data_regex = /^data:/,
@@ -99,7 +99,7 @@ function processData( ctx, renderOptions, w, h )
       isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
 
       if ( isObject( offset ) ){ 
-          offsetX = offset.x || 0; 
+          offsetX = offset.x || 0;
           offsetY = offset.y || 0;
       } else if ( isArray( offset) ){
           offsetX = offset[0] || 0;
