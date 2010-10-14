@@ -1,103 +1,164 @@
-var ROOT2 = Math.sqrt(2);
-
 // checking for canvas support
 var supportsCanvas = !!document.createElement('canvas').getContext;
 
-HTMLImageElement.prototype.closePixelate = !supportsCanvas ? function(){} : function( renderOptions ) {
-  // attach render options to image
-  this.renderOptions = renderOptions;
+if ( supportsCanvas ){
+    HTMLImageElement.prototype.closePixelate = function ( options ) { 
+        closePixelate( this, options );
+    };
+}
 
-  // check if image is already loaded in cache
-  if ( this.complete ) {
-    this.renderClosePixels();
+var hasSameOrigin = (function ( window, document ) {
+
+    var page = document.location,
+        protocol = page.protocol,
+        domain = document.domain,
+        port = page.port ? ':' + page.port : '',
+        sop_string = protocol + '//' + domain + port,
+        sop_regex = new RegExp('^' + sop_string),
+        http_regex = /^http(?:s*)/,
+        data_regex = /^data:/,
+        closure = function (url)
+        {
+            var is_local = (!http_regex.test(url)) || data_regex.test(url),
+                is_same_origin = sop_regex.test(url);
+
+            return is_local || is_same_origin;
+        };
+
+    return closure;
+
+})( window, document );
+
+var forgeImage = function ( img, callback ) {
+
+  var onImageLoaded = function( event ) {
+    callback( event.target );
+  };
+
+  if ( !hasSameOrigin( img.src ) ) {
+    // remote
+    var onDataLoaded = function( obj ) {
+      img.addEventListener( 'load', onImageLoaded, false );
+      img.src = obj.data;
+    };
+    getRemoteImageData( img.src, onDataLoaded );
   } else {
-    this.onload = this.renderClosePixels;
+    // local
+    if ( img.complete ) {
+      callback( img )
+    } else {
+
+      img.addEventListener( 'load', onImageLoaded, false ); 
+    }
   }
+  
 
 };
 
-HTMLImageElement.prototype.renderClosePixels = function() {
+function closePixelate( img, renderOptions ) {
 
-  var parent = this.parentNode,
-      w = this.width,
-      h = this.height,
-      canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d');
+  var callback = function( image ) {
+    renderClosePixels( image, renderOptions );
+  };
 
-  canvas.width = w;
-  canvas.height = h;
+  forgeImage( img, callback );
+
+}
+
+function renderClosePixels( img, renderOptions ) 
+{
+  var parent = img.parentNode,
+    w = img.width,
+    h = img.height,
+    canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d');
 
   // render image in canvas
-  ctx.drawImage( this, 0, 0);
-  // get its data
-  var imgData = ctx.getImageData(0, 0, w, h).data,
-      getPixelData = function ( x, y ) {
-        var pixelIndex = ( x + y * w ) * 4;
-            pixelData = {
-              red   : imgData[ pixelIndex + 0 ],
-              green : imgData[ pixelIndex + 1 ],
-              blue  : imgData[ pixelIndex + 2 ],
-              alpha : imgData[ pixelIndex + 3 ] / 255
-            };
-        return pixelData;
-      };
-  
-  // clear the canvas of the image
+  canvas.width = w;
+  canvas.height = h;
+  canvas.className = img.className;
+  canvas.id = img.id;
+  ctx.drawImage( img, 0, 0 );
+
+  // perform the Close pixelations
+  processData( ctx, renderOptions, w, h );
+
+  // add canvas and remove image
+  img.parentNode.replaceChild( canvas, img );
+}
+
+function processData( ctx, renderOptions, w, h )
+{
+  var PI2 = Math.PI*2, 
+    PI1_4 = Math.PI/4,
+    imgData = ctx.getImageData(0, 0, w, h).data;
+
   ctx.clearRect( 0, 0, w, h);
 
+  for (var i=0, len = renderOptions.length; i < len; i++) {
+    var opts = renderOptions[i],
+      res = opts.resolution,
+      // option defaults
+      size = opts.size || res,
+      alpha = opts.alpha || 1,
+      offset = opts.offset || 0,
+      offsetX = 0, 
+      offsetY = 0,
+      cols = w / res + 1,
+      rows = h / res + 1,
+      halfSize = size / 2,
+      diamondSize = size / Math.SQRT2,
+      halfDiamondSize = diamondSize / 2, 
+      isArray = function ( o ){ return Object.prototype.toString.call( o ) === "[object Array]"; },
+      isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
 
-  for (var i=0, len = this.renderOptions.length; i < len; i++) {
-    var opts = this.renderOptions[i],
-        cols = w / opts.resolution + 1,
-        rows = h / opts.resolution + 1,
-        // option defaults
-        size = opts.size || opts.resolution,
-        halfSize = size / 2,
-        alpha = opts.alpha || 1,
-        offset = opts.offset || 0,
-        diamondSize = size / ROOT2;
-    
-    for ( var row = 0; row < rows; row++ ) {    
-      var y = ( row - 0.5 ) * opts.resolution + offset,
-          // normalize y so shapes around edges get color
-          pixelY = Math.max( Math.min( y, h-1), 0);
+      if ( isObject( offset ) ){ 
+          offsetX = offset.x || 0;
+          offsetY = offset.y || 0;
+      } else if ( isArray( offset) ){
+          offsetX = offset[0] || 0;
+          offsetY = offset[1] || 0;
+      } else {
+          offsetX = offsetY = offset;
+      }
+
+    for ( var row = 0; row < rows; row++ ) {
+      var y = ( row - 0.5 ) * res + offsetY,
+        // normalize y so shapes around edges get color
+        pixelY = Math.max( Math.min( y, h-1), 0);
+
       for ( var col = 0; col < cols; col++ ) {
-        var x = ( col - 0.5 ) * opts.resolution + offset,
-            // normalize y so shapes around edges get color
-            pixelX = Math.max( Math.min( x, w-1), 0),
-            pixelData = getPixelData( pixelX, pixelY),
-            alpha = pixelData.alpha * alpha;
+        var x = ( col - 0.5 ) * res + offsetX,
+          // normalize y so shapes around edges get color
+          pixelX = Math.max( Math.min( x, w-1), 0),
+          pixelIndex = ( pixelX + pixelY * w ) * 4,
+          red = imgData[ pixelIndex + 0 ],
+          green = imgData[ pixelIndex + 1 ],
+          blue = imgData[ pixelIndex + 2 ];
 
-        ctx.fillStyle = 'rgba(' + pixelData.red + ',' + pixelData.green + ',' + pixelData.blue + ',' + alpha + ')';
+          alpha *= (imgData[ pixelIndex + 3 ] / 255);
+          ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ alpha + ')';
+
         switch ( opts.shape ) {
           case 'circle' :
             ctx.beginPath();
-              ctx.arc ( x, y, halfSize, 0, Math.PI*2, true);
+              ctx.arc ( x, y, halfSize, 0, PI2, true );
               ctx.fill();
             ctx.closePath();
             break;
           case 'diamond' :
             ctx.save();
-              ctx.translate( x, y);
-              ctx.rotate(Math.PI/4);
-              ctx.fillRect(-diamondSize/2, -diamondSize/2, diamondSize, diamondSize );
+              ctx.translate( x, y );
+              ctx.rotate( PI1_4 );
+              ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
             ctx.restore();
             break;
           // square
           default :
             ctx.fillRect( x - halfSize, y - halfSize, size, size );
-        }
-      }
-    }
-    
-  }
-  
-  // copy attributes
-  canvas.className = this.className;
-  canvas.id = this.id;
-  // add canvas and remove image
-  parent.insertBefore( canvas, this );
-  parent.removeChild( this );
-  
+        } // switch
+      } // col
+    } // row
+  } // options
 
-};
+}

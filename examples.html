@@ -104,7 +104,7 @@
       <article>
         <figure>
           <img id="take-my-portrait" class="portrait" src="img/take-my-portrait.jpg" alt="Take My Portrait by Hamed Saber" />
-          <figcaption>Original photo: <a href=""><em>Take My Portrait</em> by Hamed Saber</a></figcaption>
+          <figcaption>Original photo: <a href="http://www.flickr.com/photos/hamed/590034637/"><em>Take My Portrait</em> by Hamed Saber</a></figcaption>
         </figure>
         <pre><code>{ resolution: 48 },
 { shape: 'diamond', resolution: 48, offset: 12, alpha: 0.5  },
@@ -168,7 +168,7 @@
 
       <article>
         <figure>
-          <img id="gavin" class="portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
+          <img id="gavin" class="remote portrait" src="img/gavin.jpg" alt="Portrait Of A Mayor by Troy Holden" />
           <figcaption>Original photo: <a href="http://www.flickr.com/photos/troyholden/4294580760/"><em>Portrait Of A Mayor</em> by Troy Holden</a></figcaption>
         </figure>
         <pre><code>{ shape : 'square', resolution : 48 },
@@ -180,7 +180,7 @@
 
   </div> <!-- #portraits-wrap -->
 
-
+  <script src="getRemoteImageData.js"></script>
   <script src="close-pixelate.js"></script>
   <script>
     var pixelations = {
@@ -232,29 +232,35 @@
       'gavin' : [
         { shape : 'square', resolution : 48 },
         { shape : 'diamond', resolution : 12, size: 8 },
-        { shape : 'diamond', resolution : 12, size: 8, offset : 6 }
+        { shape : 'diamond', resolution : 12, size: 8, offset : 6 },
+      ],
+      'london': [
+        { shape: 'square', resolution: 32 },
+        { shape: 'circle', resolution: 32, offset: 16 },
+        { shape: 'circle', resolution: 32, offset: 0, alpha: 0.5 },
+        { shape: 'circle', resolution: 16, size: 9, offset: 0, alpha: 0.5 }
+      ],
+      'sv' : [
+        { shape : 'circle', resolution : 24 },
+        { shape : 'circle', resolution : 24, size: 9, offset: 12 }
       ]
     };
 
     var docReady = function() {
 
       for ( var key in pixelations ) {
-        var options = pixelations[key];
-        async( pixelate(key, pixelations[key]) );
+         pixelate( key, pixelations[key] );
       }
-
     };
 
-    function pixelate( id, options){
-        document.getElementById( id ).closePixelate( options );
+    function pixelate( id, options )
+    {
+        var img = document.getElementById( id );
+        if (img){ closePixelate( img, options ); }
     }
 
-    function async( fn ){
-        setTimeout( fn, 0 );
-    }
-
-    window.addEventListener( 'DOMContentLoaded', docReady, false);  </script>
-
+    window.addEventListener( 'DOMContentLoaded', docReady, false);  
+  </script>
 
 </body>
 </html>
