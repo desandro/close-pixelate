@@ -29,25 +29,45 @@ var hasSameOrigin = (function ( window, document ) {
 
 })( window, document );
 
-function closePixelate( img, renderOptions ) 
-{
-  var local_img = window.hasSameOrigin ? hasSameOrigin( img.src ) : true,
-    onLoadLocal = function ( e ) { renderClosePixels( e.target, renderOptions ) },
-    onLoadRemote = function ( e ) { closePixelate( e.target, renderOptions ); },
-    onDataLoaded = function ( obj )
-    {
-      var new_img = img.cloneNode(false);
-      new_img.addEventListener( 'load', onLoadRemote, false );
-      new_img.src = obj.data;
-      img.parentNode.replaceChild( new_img, img );
-    };
+var forgeImage = function ( img, callback ) {
 
-    if ( !local_img ) {
-      if (window.getRemoteImageData){ getRemoteImageData( img.src, onDataLoaded ); }
+  var onImageLoaded = function( event ) {
+    callback( event.target );
+  };
+
+  if ( !hasSameOrigin( img.src ) ) {
+    // remote
+    var onDataLoaded = function( obj ) {
+      var proxyImage = new Image();
+      proxyImage.addEventListener( 'load', onImageLoaded, false );
+      proxyImage.src = obj.data;
+    };
+    console.log( img );
+    getRemoteImageData( img, onDataLoaded );
+  } else {
+    // local
+    if ( img.complete ) {
+      callback( img )
     } else {
-      if (img.complete) { renderClosePixels( img, renderOptions ); } 
-      else              { img.addEventListener( 'load', onLoadLocal, false ); }
+
+      img.addEventListener( 'load', onImageLoaded, false ); 
     }
+  }
+  
+
+};
+
+function closePixelate( img, renderOptions ) {
+
+  var callback = function( image ) {
+    renderClosePixels( image, renderOptions );
+  };
+
+  getRemoteImageData( img, function( obj ){
+    console.log( obj )
+  } );
+
+  // forgeImage( img, callback );
 
 }
 
