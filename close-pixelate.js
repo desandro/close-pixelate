@@ -38,12 +38,10 @@ var forgeImage = function ( img, callback ) {
   if ( !hasSameOrigin( img.src ) ) {
     // remote
     var onDataLoaded = function( obj ) {
-      var proxyImage = new Image();
-      proxyImage.addEventListener( 'load', onImageLoaded, false );
-      proxyImage.src = obj.data;
+      img.addEventListener( 'load', onImageLoaded, false );
+      img.src = obj.data;
     };
-    console.log( img );
-    getRemoteImageData( img, onDataLoaded );
+    getRemoteImageData( img.src, onDataLoaded );
   } else {
     // local
     if ( img.complete ) {
@@ -63,11 +61,7 @@ function closePixelate( img, renderOptions ) {
     renderClosePixels( image, renderOptions );
   };
 
-  getRemoteImageData( img, function( obj ){
-    console.log( obj )
-  } );
-
-  // forgeImage( img, callback );
+  forgeImage( img, callback );
 
 }
 
