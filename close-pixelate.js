@@ -29,23 +29,25 @@ var hasSameOrigin = (function ( window, document ) {
 
 })( window, document );
 
-var forgeImage = function ( img, callback ) {
+var forgeImage = function ( img, onImageReady ) {
 
   var onImageLoaded = function( event ) {
-    callback( event.target );
+    onImageReady( event.target );
   };
 
   if ( !hasSameOrigin( img.src ) ) {
     // remote
     var onDataLoaded = function( obj ) {
-      img.addEventListener( 'load', onImageLoaded, false );
-      img.src = obj.data;
+      var new_img = img.cloneNode(false);
+      new_img.addEventListener( 'load', onImageLoaded, false );
+      new_img.src = obj.data;
+      img.parentNode.replaceChild( new_img, img );
     };
     getRemoteImageData( img.src, onDataLoaded );
   } else {
     // local
     if ( img.complete ) {
-      callback( img )
+      onImageReady( img )
     } else {
 
       img.addEventListener( 'load', onImageLoaded, false ); 
@@ -57,11 +59,11 @@ var forgeImage = function ( img, callback ) {
 
 function closePixelate( img, renderOptions ) {
 
-  var callback = function( image ) {
+  var onImageReady = function( image ) {
     renderClosePixels( image, renderOptions );
   };
 
-  forgeImage( img, callback );
+  forgeImage( img, onImageReady );
 
 }
 
