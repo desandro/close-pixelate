@@ -137,7 +137,7 @@
 
       <article>
         <figure>
-          <img id="anita" class="portrait" src="img/anita.jpg" alt="anita shlosse 04 c studio.es by Vincent Boiteau" />
+          <img id="anita" class="portrait" src="http://farm3.static.flickr.com/2045/1708261749_bed1631d31_b.jpg" alt="anita shlosse 04 c studio.es by Vincent Boiteau" />
           <figcaption>Original photo: <a href="http://www.flickr.com/photos/2dogs_productions/1708261749/"><em>anita shlosse 04 &copy; studio.es</em> by Vincent Boiteau</a></figcaption>
         </figure>
         <pre><code>{ shape: 'square', resolution: 32 },
@@ -148,7 +148,7 @@
 
       <article>
         <figure>
-          <img id="giraffe" class="portrait" src="img/giraffe.jpg" alt="Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007 by Keven Law" />
+          <img id="giraffe" class="portrait" src="http://farm2.static.flickr.com/1226/1300905195_1bd8f2fac0_b.jpg" alt="Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007 by Keven Law" />
           <figcaption>Original photo: <a href="http://www.flickr.com/photos/kevenlaw/1300905195/"><em>Giraffe Portrait - Woburn Safari Park - Monday August 27th 2007</em> by Keven Law</a></figcaption>
         </figure>
         <pre><code>{ shape : 'circle', resolution : 24 },
@@ -180,7 +180,6 @@
 
   </div> <!-- #portraits-wrap -->
 
-  <script src="getRemoteImageData.js"></script>
   <script src="close-pixelate.js"></script>
   <script>
     var pixelations = {
@@ -249,15 +248,13 @@
     var docReady = function() {
 
       for ( var key in pixelations ) {
-         pixelate( key, pixelations[key] );
+        var img = document.getElementById( key ),
+            options = pixelations[key];
+        if ( img ) { 
+          ClosePixelate.imageNode( img, options ); 
+        }
       }
     };
-
-    function pixelate( id, options )
-    {
-        var img = document.getElementById( id );
-        if (img){ closePixelate( img, options ); }
-    }
 
     window.addEventListener( 'DOMContentLoaded', docReady, false);  
   </script>
