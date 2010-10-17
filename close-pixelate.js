@@ -124,7 +124,9 @@ ClosePixelate.replaceImageNode = function( img, originalNode, renderOptions ) {
 ClosePixelate.renderClosePixels = function ( ctx, renderOptions, w, h ) {
   var PI2 = Math.PI*2, 
       PI1_4 = Math.PI/4,
-      imgData = ctx.getImageData(0, 0, w, h).data;
+      imgData = ctx.getImageData(0, 0, w, h).data, 
+      isArray = function ( o ){ return Object.prototype.toString.call( o ) === "[object Array]"; },
+      isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
 
   ctx.clearRect( 0, 0, w, h);
 
@@ -141,9 +143,7 @@ ClosePixelate.renderClosePixels = function ( ctx, renderOptions, w, h ) {
         rows = h / res + 1,
         halfSize = size / 2,
         diamondSize = size / Math.SQRT2,
-        halfDiamondSize = diamondSize / 2, 
-        isArray = function ( o ){ return Object.prototype.toString.call( o ) === "[object Array]"; },
-        isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
+        halfDiamondSize = diamondSize / 2;
 
     if ( isObject( offset ) ){ 
       offsetX = offset.x || 0;
