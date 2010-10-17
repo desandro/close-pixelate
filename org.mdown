@@ -1,8 +1,0 @@
-
-// take an image (doesn't have to be in dom) and returns an image that has same origin
-img.forge( callback )
-
-// forges the image and replaces it in the dom with the forged image
-img.replaceWithForged( callback )
-
-// closePixelateCanvas
