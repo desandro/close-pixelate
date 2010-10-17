@@ -7,6 +7,12 @@ This project lives on GitHub at [github.com/desandro/close-pixelate](http://gith
 
 Take a look at what the script is capable of in [examples.html](examples.html)
 
+Contributors
+------------
+
+ - [David DeSandro](http://desandro.com)
+ - [John Schulz](http://twitter.com/jfsiii)
+
 Options
 -------
 
@@ -15,15 +21,15 @@ The function accepts an array of objects. Each object holds a set of options.
  - `resolution` : The distance in pixels between rendered pixels. Required.
  - `shape` : The shape of the pixel. Accepts `square`, `circle`, and `diamond`. Optional. Defaults to `square`.
  - `size` : The size in pixels of the rendered pixel. Optional. Defaults to value of `resolution`.
- - `offset` : A diagonal offset in pixels. Optional. Defaults to `0`.
+ - `offset` : Offset in pixels. Optional. Defaults to `0`. Can be a single value `15` for a diagonal offset, or an array or object for X/Y pairs: `[ 15, 5 ]` or `{ x: 15, y: 5 }`.
  - `alpha` : A decimal value for the opacity of the rendering. Optional. Defaults to `1`.
  
 Example Code
 ------------
 
-This script works on any **locally hosted** image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on any externally hosted image.
+This script works on any image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on any externally hosted image, but (largely thanks to the contributions of John Schulz) Close Pixelate has built-in methods to get around this security feature.
 
-    <img src="portrait-image" src="img/portrait.jpg" />
+    <img src="img/portrait.jpg" />
 
 Use the `closePixelate` method on the image in your script. You can control the output of the rendering by passing in an array of options.
 
