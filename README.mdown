@@ -29,7 +29,7 @@ Example Code
 
 This script works on any image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on any externally hosted image, but (largely thanks to the contributions of John Schulz, using [Max Novakovic's getImageData API](http://www.maxnov.com/getimagedata)) Close Pixelate has built-in methods to get around this security feature.
 
-    <img src="img/portrait.jpg" />
+    <img id="portrait-image" src="img/portrait.jpg" />
 
 Use the `closePixelate` method on the image in your script. You can control the output of the rendering by passing in an array of options.
 
