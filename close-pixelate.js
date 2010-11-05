@@ -167,10 +167,10 @@ ClosePixelate.renderClosePixels = function ( ctx, renderOptions, w, h ) {
             pixelIndex = ( pixelX + pixelY * w ) * 4,
             red = imgData[ pixelIndex + 0 ],
             green = imgData[ pixelIndex + 1 ],
-            blue = imgData[ pixelIndex + 2 ];
+            blue = imgData[ pixelIndex + 2 ],
+            pixelAlpha = alpha * (imgData[ pixelIndex + 3 ] / 255);
 
-            alpha *= (imgData[ pixelIndex + 3 ] / 255);
-            ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ alpha + ')';
+        ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')';
 
         switch ( opts.shape ) {
           case 'circle' :
