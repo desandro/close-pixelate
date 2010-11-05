@@ -1,3 +1,18 @@
+/* Close Pixelate
+ * http://desandro.com/resources/close-pixelate/
+ * 
+ * Developed by
+ * - David DeSandro  http://desandro.com
+ * - John Schulz  http://twitter.com/jfsiii
+ * 
+ * Thanks to Max Novakovic for getImageData API http://www.maxnov.com/getimagedata
+ * 
+ * Copyright (c) 2010
+ * Licensed under MIT license
+ * 
+ * /
+
+
 /*********************** imageForgery ************************/
 
 var imageForgery = {};
