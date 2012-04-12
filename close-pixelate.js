@@ -52,7 +52,7 @@ function ClosePixelation( img, options ) {
   this.render( options )
 
   // replace image with canvas
-  img.parentNode.replaceChild( canvas, img );
+  img.parentNode.replaceChild( canvas, img )
 
 }
 
@@ -66,7 +66,7 @@ ClosePixelation.prototype.render = function( options ) {
   // get imageData
   this.imgData = this.ctx.getImageData( 0, 0, w, h ).data
 
-  this.ctx.clearRect( 0, 0, w, h );
+  this.ctx.clearRect( 0, 0, w, h )
 
   for ( var i=0, len = options.length; i < len; i++ ) {
     this.renderClosePixels( options[i] )
@@ -94,13 +94,13 @@ ClosePixelation.prototype.renderClosePixels = function( opts ) {
   var halfDiamondSize = diamondSize / 2
 
   if ( isObject( offset ) ){ 
-    offsetX = offset.x || 0;
-    offsetY = offset.y || 0;
+    offsetX = offset.x || 0
+    offsetY = offset.y || 0
   } else if ( isArray( offset) ){
-    offsetX = offset[0] || 0;
-    offsetY = offset[1] || 0;
+    offsetX = offset[0] || 0
+    offsetY = offset[1] || 0
   } else {
-    offsetX = offsetY = offset;
+    offsetX = offsetY = offset
   }
 
   var row, col, x, y, pixelY, pixelX, pixelIndex, red, green, blue, pixelAlpha
@@ -120,25 +120,25 @@ ClosePixelation.prototype.renderClosePixels = function( opts ) {
       blue  = imgData[ pixelIndex + 2 ]
       pixelAlpha = alpha * ( imgData[ pixelIndex + 3 ] / 255)
 
-      ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')';
+      ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')'
 
       switch ( opts.shape ) {
         case 'circle' :
-          ctx.beginPath();
-            ctx.arc ( x, y, halfSize, 0, TWO_PI, true );
-            ctx.fill();
-          ctx.closePath();
-          break;
+          ctx.beginPath()
+            ctx.arc ( x, y, halfSize, 0, TWO_PI, true )
+            ctx.fill()
+          ctx.closePath()
+          break
         case 'diamond' :
-          ctx.save();
-            ctx.translate( x, y );
-            ctx.rotate( QUARTER_PI );
-            ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
-          ctx.restore();
-          break;
+          ctx.save()
+            ctx.translate( x, y )
+            ctx.rotate( QUARTER_PI )
+            ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize )
+          ctx.restore()
+          break
         default :
           // square
-          ctx.fillRect( x - halfSize, y - halfSize, size, size );
+          ctx.fillRect( x - halfSize, y - halfSize, size, size )
       } // switch
     } // col
   } // row
