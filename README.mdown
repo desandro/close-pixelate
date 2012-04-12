@@ -27,7 +27,7 @@ The function accepts an array of objects. Each object holds a set of options.
 Example Code
 ------------
 
-This script works on any image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on any externally hosted image, but (largely thanks to the contributions of John Schulz, using [Max Novakovic's getImageData API](http://www.maxnov.com/getimagedata)) Close Pixelate has built-in methods to get around this security feature.
+This script works on any _same domain_ image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on cross-domain images.
 
     <img id="portrait-image" src="img/portrait.jpg" />
 
