@@ -145,6 +145,11 @@ ClosePixelation.prototype.renderClosePixels = function( opts ) {
 
 }
 
+// enable img.closePixelate
+HTMLImageElement.prototype.closePixelate = function ( options ) {
+  return new ClosePixelation( this, options )
+}
+
 // put in global namespace
 window.ClosePixelation = ClosePixelation
 
