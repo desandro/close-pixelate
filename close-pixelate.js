@@ -40,7 +40,7 @@ if ( !isCanvasSupported ) {
 }
 
 
-function ClosePixelate( img, options ) {
+function ClosePixelation( img, options ) {
   this.img = img
   // creat canvas
   var canvas = this.canvas = document.createElement('canvas')
@@ -56,7 +56,7 @@ function ClosePixelate( img, options ) {
 
 }
 
-ClosePixelate.prototype.render = function( options ) {
+ClosePixelation.prototype.render = function( options ) {
   this.options = options
   // set size
   var w = this.canvas.width = this.img.width
@@ -94,6 +94,8 @@ ClosePixelate.prototype.renderClosePixels = function() {
   var h = this.img.height
 
   this.ctx.clearRect( 0, 0, w, h );
+// put in global namespace
+window.ClosePixelation = ClosePixelation
 
   for (var i=0, len = renderOptions.length; i < len; i++) {
     var opts = renderOptions[i],
@@ -161,7 +163,5 @@ ClosePixelate.prototype.renderClosePixels = function() {
 
 };
 
-// put in global namespace
-window.ClosePixelate = ClosePixelate
 
 })( window );
