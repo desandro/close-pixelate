@@ -26,7 +26,7 @@ function isArray( obj ) {
 }
 
 function isObject( obj ) {
-  return Object.prototype.toString.call( o ) === "[object Object]"
+  return Object.prototype.toString.call( obj ) === "[object Object]"
 }
 
 
@@ -59,109 +59,94 @@ function ClosePixelation( img, options ) {
 ClosePixelation.prototype.render = function( options ) {
   this.options = options
   // set size
-  var w = this.canvas.width = this.img.width
-  var h = this.canvas.height = this.img.height
+  var w = this.width = this.canvas.width = this.img.width
+  var h = this.height = this.canvas.height = this.img.height
   // draw image on canvas
   this.ctx.drawImage( this.img, 0, 0 )
   // get imageData
-  var imgData = this.ctx.getImageData( 0, 0, w, h ).data
+  this.imgData = this.ctx.getImageData( 0, 0, w, h ).data
+
+  this.ctx.clearRect( 0, 0, w, h );
+
+  for ( var i=0, len = options.length; i < len; i++ ) {
+    this.renderClosePixels( options[i] )
+  }
 
 }
 
+ClosePixelation.prototype.renderClosePixels = function( opts ) {
+  var w = this.width
+  var h = this.height
+  var ctx = this.ctx
+  var imgData = this.imgData
+
+  // option defaults
+  var res = opts.resolution || 16
+  var size = opts.size || res
+  var alpha = opts.alpha || 1
+  var offset = opts.offset || 0
+  var offsetX = 0
+  var offsetY = 0
+  var cols = w / res + 1
+  var rows = h / res + 1
+  var halfSize = size / 2
+  var diamondSize = size / Math.SQRT2
+  var halfDiamondSize = diamondSize / 2
+
+  if ( isObject( offset ) ){ 
+    offsetX = offset.x || 0;
+    offsetY = offset.y || 0;
+  } else if ( isArray( offset) ){
+    offsetX = offset[0] || 0;
+    offsetY = offset[1] || 0;
+  } else {
+    offsetX = offsetY = offset;
+  }
+
+  for ( var row = 0; row < rows; row++ ) {
+    var y = ( row - 0.5 ) * res + offsetY,
+      // normalize y so shapes around edges get color
+      pixelY = Math.max( Math.min( y, h-1), 0);
+
+    for ( var col = 0; col < cols; col++ ) {
+      var x = ( col - 0.5 ) * res + offsetX,
+          // normalize y so shapes around edges get color
+          pixelX = Math.max( Math.min( x, w-1), 0),
+          pixelIndex = ( pixelX + pixelY * w ) * 4,
+          red   = imgData[ pixelIndex + 0 ],
+          green = imgData[ pixelIndex + 1 ],
+          blue  = imgData[ pixelIndex + 2 ],
+          pixelAlpha = alpha * ( imgData[ pixelIndex + 3 ] / 255);
+      ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')';
+
+      switch ( opts.shape ) {
+        case 'circle' :
+          ctx.beginPath();
+            ctx.arc ( x, y, halfSize, 0, TWO_PI, true );
+            ctx.fill();
+          ctx.closePath();
+          break;
+        case 'diamond' :
+          ctx.save();
+            ctx.translate( x, y );
+            ctx.rotate( QUARTER_PI );
+            ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
+          ctx.restore();
+          break;
+        default :  
+          // square
+          ctx.fillRect( x - halfSize, y - halfSize, size, size );
+      } // switch
+    } // col
+  } // row
 
 
-ClosePixelate.replaceImageNode = function( img, originalNode, renderOptions ) {
-  var w = img.width,
-      h = img.height,
-      canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d');
 
-  // render image in canvas
-  canvas.width = w;
-  canvas.height = h;
-  canvas.className = originalNode.className;
-  canvas.id = originalNode.id;
-  ctx.drawImage( img, 0, 0 );
+}
 
-  // perform the Close pixelations
-  ClosePixelate.renderClosePixels( ctx, renderOptions, w, h );
-
-};
-
-
-ClosePixelate.prototype.renderClosePixels = function() {
-  var w = this.img.width
-  var h = this.img.height
-
-  this.ctx.clearRect( 0, 0, w, h );
 // put in global namespace
 window.ClosePixelation = ClosePixelation
 
-  for (var i=0, len = renderOptions.length; i < len; i++) {
-    var opts = renderOptions[i],
-        res = opts.resolution,
-        // option defaults
-        size = opts.size || res,
-        alpha = opts.alpha || 1,
-        offset = opts.offset || 0,
-        offsetX = 0, 
-        offsetY = 0,
-        cols = w / res + 1,
-        rows = h / res + 1,
-        halfSize = size / 2,
-        diamondSize = size / Math.SQRT2,
-        halfDiamondSize = diamondSize / 2;
-
-    if ( isObject( offset ) ){ 
-      offsetX = offset.x || 0;
-      offsetY = offset.y || 0;
-    } else if ( isArray( offset) ){
-      offsetX = offset[0] || 0;
-      offsetY = offset[1] || 0;
-    } else {
-      offsetX = offsetY = offset;
-    }
-
-    for ( var row = 0; row < rows; row++ ) {
-      var y = ( row - 0.5 ) * res + offsetY,
-        // normalize y so shapes around edges get color
-        pixelY = Math.max( Math.min( y, h-1), 0);
-
-      for ( var col = 0; col < cols; col++ ) {
-        var x = ( col - 0.5 ) * res + offsetX,
-            // normalize y so shapes around edges get color
-            pixelX = Math.max( Math.min( x, w-1), 0),
-            pixelIndex = ( pixelX + pixelY * w ) * 4,
-            red = imgData[ pixelIndex + 0 ],
-            green = imgData[ pixelIndex + 1 ],
-            blue = imgData[ pixelIndex + 2 ],
-            pixelAlpha = alpha * (imgData[ pixelIndex + 3 ] / 255);
-
-        ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')';
-
-        switch ( opts.shape ) {
-          case 'circle' :
-            ctx.beginPath();
-              ctx.arc ( x, y, halfSize, 0, PI2, true );
-              ctx.fill();
-            ctx.closePath();
-            break;
-          case 'diamond' :
-            ctx.save();
-              ctx.translate( x, y );
-              ctx.rotate( PI1_4 );
-              ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
-            ctx.restore();
-            break;
-          default :  
-            // square
-            ctx.fillRect( x - halfSize, y - halfSize, size, size );
-        } // switch
-      } // col
-    } // row
-  } // options
-
-};
 
 
 })( window );
