@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>dolly</title>
+  
+</head>
+<body>
+
+  <h1>dolly</h1>
+
+  <p>Change pixel resolution <input type="range" min="4" max="100" value="32" id="range" /></p>
+  
+  <div>
+    <img src="img/dolly1" id="dolly1" />
+    <img src="img/dolly2" id="dolly2" />
+    <img src="img/dolly3" id="dolly3" />
+  </div>
+
+
+<script src="close-pixelate.js"></script>
+<script>
+
+window.onload = function() {
+  var dolly1 = document.getElementById('dolly1')
+  var dolly2 = document.getElementById('dolly2')
+  var dolly3 = document.getElementById('dolly3')
+  var pixelOpts = [ { resolution: 32 } ]
+  var pixelDolly1 = dolly1.closePixelate( pixelOpts )
+  var pixelDolly2 = dolly2.closePixelate( pixelOpts )
+  var pixelDolly3 = dolly3.closePixelate( pixelOpts )
+  var range = document.getElementById('range')
+
+  range.addEventListener( 'change', function( event ) {
+    var res = parseInt( event.target.value, 10 )
+    res = Math.floor( res / 2 ) * 2
+    res = Math.max( 4, Math.min( 100, res ) ) 
+    // console.log( res );
+    pixelOpts = [ { resolution: res } ]
+    pixelDolly1.render( pixelOpts )
+    pixelDolly2.render( pixelOpts )
+    pixelDolly3.render( pixelOpts )
+  }, false )
+}
+
+
+
+</script>
+
+</body>
+</html>
