@@ -103,20 +103,23 @@ ClosePixelation.prototype.renderClosePixels = function( opts ) {
     offsetX = offsetY = offset;
   }
 
-  for ( var row = 0; row < rows; row++ ) {
-    var y = ( row - 0.5 ) * res + offsetY,
-      // normalize y so shapes around edges get color
-      pixelY = Math.max( Math.min( y, h-1), 0);
+  var row, col, x, y, pixelY, pixelX, pixelIndex, red, green, blue, pixelAlpha
 
-    for ( var col = 0; col < cols; col++ ) {
-      var x = ( col - 0.5 ) * res + offsetX,
-          // normalize y so shapes around edges get color
-          pixelX = Math.max( Math.min( x, w-1), 0),
-          pixelIndex = ( pixelX + pixelY * w ) * 4,
-          red   = imgData[ pixelIndex + 0 ],
-          green = imgData[ pixelIndex + 1 ],
-          blue  = imgData[ pixelIndex + 2 ],
-          pixelAlpha = alpha * ( imgData[ pixelIndex + 3 ] / 255);
+  for ( row = 0; row < rows; row++ ) {
+    y = ( row - 0.5 ) * res + offsetY
+    // normalize y so shapes around edges get color
+    pixelY = Math.max( Math.min( y, h-1), 0)
+
+    for ( col = 0; col < cols; col++ ) {
+      x = ( col - 0.5 ) * res + offsetX
+      // normalize y so shapes around edges get color
+      pixelX = Math.max( Math.min( x, w-1), 0)
+      pixelIndex = ( pixelX + pixelY * w ) * 4
+      red   = imgData[ pixelIndex + 0 ]
+      green = imgData[ pixelIndex + 1 ]
+      blue  = imgData[ pixelIndex + 2 ]
+      pixelAlpha = alpha * ( imgData[ pixelIndex + 3 ] / 255)
+
       ctx.fillStyle = 'rgba(' + red +','+ green +','+ blue +','+ pixelAlpha + ')';
 
       switch ( opts.shape ) {
@@ -133,20 +136,16 @@ ClosePixelation.prototype.renderClosePixels = function( opts ) {
             ctx.fillRect( -halfDiamondSize, -halfDiamondSize, diamondSize, diamondSize );
           ctx.restore();
           break;
-        default :  
+        default :
           // square
           ctx.fillRect( x - halfSize, y - halfSize, size, size );
       } // switch
     } // col
   } // row
 
-
-
 }
 
 // put in global namespace
 window.ClosePixelation = ClosePixelation
-
-
 
 })( window );
