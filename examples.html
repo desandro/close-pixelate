@@ -235,16 +235,18 @@
       ]
     };
 
-    var docReady = function() {
 
+    function docReady() {
       for ( var key in pixelations ) {
         var img = document.getElementById( key ),
             options = pixelations[key];
         if ( img ) { 
-          img.closePixelate( options )
+          // img.closePixelate( options )
+          new ClosePixelate( img, options )
         }
       }
-    };
+    }
+
 
     window.addEventListener( 'DOMContentLoaded', docReady, false);  
   </script>

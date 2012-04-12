@@ -1,119 +1,74 @@
-/* Close Pixelate
+/*!
+ * Close Pixelate v2.0.00
  * http://desandro.com/resources/close-pixelate/
  * 
  * Developed by
  * - David DeSandro  http://desandro.com
  * - John Schulz  http://twitter.com/jfsiii
  * 
- * Thanks to Max Novakovic for getImageData API http://www.maxnov.com/getimagedata
- * 
- * Copyright (c) 2010
  * Licensed under MIT license
- * 
- * /
+ */
 
+/*jshint asi: true, browser: true, eqeqeq: true, forin: false, immed: false, newcap: true, noempty: true, strict: true, undef: true */
 
-/*********************** imageForgery ************************/
+( function( window, undefined ) {
 
-var imageForgery = {};
+//
+'use strict';
 
-imageForgery.hasSameOrigin = (function() {
+// util vars
+var TWO_PI = Math.PI * 2
+var QUARTER_PI = Math.PI * 0.25
 
-  var page = document.location,
-      protocol = page.protocol,
-      domain = document.domain,
-      port = page.port ? ':' + page.port : '',
-      sop_string = protocol + '//' + domain + port,
-      sop_regex = new RegExp('^' + sop_string),
-      http_regex = /^http(?:s*)/,
-      data_regex = /^data:/,
-      closure = function ( url )
-      {
-          var is_local = (!http_regex.test(url)) || data_regex.test(url),
-              is_same_origin = sop_regex.test(url);
-
-          return is_local || is_same_origin;
-      };
-
-  return closure;
-  
-})();
-
-imageForgery.getRemoteImageData = function ( img_url, callback )
-{
-    var page_url = document.location.href,
-        secure_root = "https://img-to-json.appspot.com/",
-        insecure_root = "http://img-to-json.maxnov.com/",
-        secure_regex = /^https:/,
-        is_secure = secure_regex.test(img_url) || secure_regex.test(page_url),
-        service_root = is_secure ? secure_root : insecure_root,
-        cb_stack_name = "cp_remote_image_callbacks",
-        cb_stack = cb_stack_name in window ? window[cb_stack_name] : window[cb_stack_name] = [],
-        cb_name = cb_stack_name +'['+ cb_stack.length +']',
-        service_url = service_root + "?url=" + escape(img_url) + "&callback=" + cb_name,
-        script = document.createElement('script');
-
-    cb_stack.push( callback );
-    script.src = service_url;
-    document.body.appendChild(script);
-};
-
-imageForgery.forgeImage = function( img, callback ) {
-  
-  var onImageLoaded = function( event ) {
-    callback( event.target );
-  };
-
-  if ( !imageForgery.hasSameOrigin( img.src ) ) {
-    // remote
-    var onDataLoaded = function( obj ) {
-      var proxyImage = new Image();
-      proxyImage.addEventListener( 'load', onImageLoaded, false );
-      proxyImage.src = obj.data;
-    };
-    imageForgery.getRemoteImageData( img.src, onDataLoaded );
-  } else {
-    // local
-    if ( img.complete ) {
-      callback( img )
-    } else {
-
-      img.addEventListener( 'load', onImageLoaded, false ); 
-    }
-  }
-  
-};
-
-
-/*********************** Close Pixelate ************************/
-
-
-var ClosePixelate = {};
-
-ClosePixelate.proxyCanvas = document.createElement('canvas');
-
-// checking for canvas support
-ClosePixelate.supportsCanvas = !!ClosePixelate.proxyCanvas.getContext &&
-  !!ClosePixelate.proxyCanvas.getContext('2d');
-
-if ( ClosePixelate.supportsCanvas ){
-  HTMLImageElement.prototype.closePixelate = function ( options ) { 
-    ClosePixelate.imageNode( this, options )
-  };
+// utility functions
+function isArray( obj ) {
+  return Object.prototype.toString.call( obj ) === "[object Array]"
 }
 
-// takes an <img />, replaces it with <canvas />
-ClosePixelate.imageNode = function ( img, renderOptions ) {
+function isObject( obj ) {
+  return Object.prototype.toString.call( o ) === "[object Object]"
+}
 
-  var callback = function( forgedImage ) {
-    ClosePixelate.replaceImageNode( forgedImage, img, renderOptions );
-  };
 
-  // this method takes any image and returns it with a copy
-  // that has the same origin, thus avoiding canvas's security
-  imageForgery.forgeImage( img, callback );
+// check for canvas support
+var canvas = document.createElement('canvas')
+var isCanvasSupported = canvas.getContext && canvas.getContext('2d')
 
-};
+// don't proceed if canvas is no supported
+if ( !isCanvasSupported ) {
+  return
+}
+
+
+function ClosePixelate( img, options ) {
+  this.img = img
+  // creat canvas
+  var canvas = this.canvas = document.createElement('canvas')
+  this.ctx = canvas.getContext('2d')
+  // copy attributes from img to canvas
+  canvas.className = img.className
+  canvas.id = img.id
+
+  this.render( options )
+
+  // replace image with canvas
+  img.parentNode.replaceChild( canvas, img );
+
+}
+
+ClosePixelate.prototype.render = function( options ) {
+  this.options = options
+  // set size
+  var w = this.canvas.width = this.img.width
+  var h = this.canvas.height = this.img.height
+  // draw image on canvas
+  this.ctx.drawImage( this.img, 0, 0 )
+  // get imageData
+  var imgData = this.ctx.getImageData( 0, 0, w, h ).data
+
+}
+
+
 
 ClosePixelate.replaceImageNode = function( img, originalNode, renderOptions ) {
   var w = img.width,
@@ -131,19 +86,14 @@ ClosePixelate.replaceImageNode = function( img, originalNode, renderOptions ) {
   // perform the Close pixelations
   ClosePixelate.renderClosePixels( ctx, renderOptions, w, h );
 
-  // add canvas and remove image
-  originalNode.parentNode.replaceChild( canvas, originalNode );
 };
 
 
-ClosePixelate.renderClosePixels = function ( ctx, renderOptions, w, h ) {
-  var PI2 = Math.PI*2, 
-      PI1_4 = Math.PI/4,
-      imgData = ctx.getImageData(0, 0, w, h).data, 
-      isArray = function ( o ){ return Object.prototype.toString.call( o ) === "[object Array]"; },
-      isObject = function ( o ){ return Object.prototype.toString.call( o ) === "[object Object]"; };
+ClosePixelate.prototype.renderClosePixels = function() {
+  var w = this.img.width
+  var h = this.img.height
 
-  ctx.clearRect( 0, 0, w, h);
+  this.ctx.clearRect( 0, 0, w, h );
 
   for (var i=0, len = renderOptions.length; i < len; i++) {
     var opts = renderOptions[i],
@@ -210,3 +160,8 @@ ClosePixelate.renderClosePixels = function ( ctx, renderOptions, w, h ) {
   } // options
 
 };
+
+// put in global namespace
+window.ClosePixelate = ClosePixelate
+
+})( window );
