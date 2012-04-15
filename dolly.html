@@ -10,7 +10,7 @@
 
   <h1>dolly</h1>
 
-  <p>Change pixel resolution <input type="range" min="4" max="100" value="32" id="range" /></p>
+  <p>Change pixel resolution <input type="range" min="4" max="100" value="32" id="range" /> <span id="output">32</span></p>
   
   <div>
     <img src="img/dolly1" id="dolly1" />
@@ -31,11 +31,13 @@ window.onload = function() {
   var pixelDolly2 = dolly2.closePixelate( pixelOpts )
   var pixelDolly3 = dolly3.closePixelate( pixelOpts )
   var range = document.getElementById('range')
+  var output = document.getElementById('output')
 
   range.addEventListener( 'change', function( event ) {
     var res = parseInt( event.target.value, 10 )
     res = Math.floor( res / 2 ) * 2
-    res = Math.max( 4, Math.min( 100, res ) ) 
+    res = Math.max( 4, Math.min( 100, res ) )
+    output.textContent = res
     // console.log( res );
     pixelOpts = [ { resolution: res } ]
     pixelDolly1.render( pixelOpts )
