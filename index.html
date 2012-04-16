@@ -9,7 +9,7 @@
 
   <style media="screen">
     body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-family: Helvetica, Arial, sans-serif;
       background: #111;
       overflow-x: hidden;
       color: #DDD;
@@ -22,16 +22,21 @@
       position: relative;
     }
 
+    h1 {
+      text-align: center;
+      font-size: 54px;
+      line-height: 1.1em;
+      margin: 0 0 0.5em;
+    }
+
     .copy {
-      width: 540px;
-      margin: 0 10px;
+      width: 620px;
+      margin: 0 auto 40px;
+      border-bottom: 1px solid #666;
     }
 
     .examples {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 300px;
+      text-align: center;
     }
 
     #portraits-wrap {
@@ -47,6 +52,7 @@
 
     a { color: #E58;  text-decoration: none; }
     a:hover { color: #58E; }
+    a:active { color: #F93; }
 
     article {
       display: block;
@@ -103,12 +109,12 @@
     }
 
     a.button:hover {
-      background-color: #F69;
+      background-color: #58E;
     }
 
     a.button:active {
-      background-color: #D37;
-      box-shadow: inset 0 2px 4px hsla( 0, 0%, 0%, 0.6 );
+      background-color: #36C;
+      box-shadow: inset 0 2px 10px hsla( 0, 0%, 0%, 0.7 );
     }
 
   </style>
@@ -120,14 +126,23 @@
 
   <div id="content">
 
+    <h1>Close Pixelate</h1>
+
+    <div class="examples">
+      <img src="img/stanley-small.jpg" />
+      <img id="example2" src="img/stanley-small.jpg" />
+      <img id="example3" src="img/stanley-small.jpg" />
+    </div>
+
     <div class="copy">
-      <h1>Close Pixelate</h1>
 
-      <p>Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It's basically a simple demo for canvas' <a href="https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas">imageData</a> functionality. </p>
+      <p>Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It&rsquo;s basically a simple demo for canvas&rsquo; <a href="https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas">imageData</a> functionality. </p>
 
-      <p>This project lives on GitHub where you can download the script and these examples.</p>
-
-      <p><a class="button" href="http://github.com/desandro/close-pixelate">Close Pixelate on GitHub</a> <a class="button" href="https://raw.github.com/desandro/close-pixelate/master/close-pixelate.js">Download close-pixelate.js</a></p>
+      <p>
+        <a class="button" href="http://github.com/desandro/close-pixelate">Close Pixelate on GitHub</a>
+        <a class="button" href="http://github.com/desandro/close-pixelate/#readme">Read docs</a>
+        <a class="button" href="close-pixelate.js">Download close-pixelate.js</a>
+      </p>
 
       <h2>Contributors</h2>
 
@@ -142,46 +157,13 @@
 
       <p><a href="http://thepixelator.com"><img src="img/the-pixelator.jpg" alt="The Pixelator by Ben Keen" /></a></p>
 
-      <h2>Options</h2>
-
-      <p>The function accepts an array of objects. Each object holds a set of options.</p>
+      <h2>Demos</h2>
 
       <ul>
-        <li><code>resolution</code> : The distance in pixels between rendered pixels. Required.</li>
-        <li><code>shape</code> : The shape of the pixel. Accepts <code>square</code>, <code>circle</code>, and <code>diamond</code>. Optional. Defaults to <code>square</code>.</li>
-        <li><code>size</code> : The size in pixels of the rendered pixel. Optional. Defaults to value of <code>resolution</code>.</li>
-        <li><code>offset</code> : Offset in pixels. Optional. Defaults to <code>0</code>. Can be a single value <code>15</code> for a diagonal offset, or an array or object for X/Y pairs: <code>[ 15, 5 ]</code> or <code>{ x: 15, y: 5 }</code>.</li>
-        <li><code>alpha</code> : A decimal value for the opacity of the rendering. Optional. Defaults to <code>1</code>.</li>
+        <li><a href="dolly.html">Change pixel resolution on Dolly</li>
       </ul>
 
-      <h2>Example Code</h2>
-
-      <p>This script works on any image. <a href="http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements">According to the HTML5 spec</a>, browsers prevent the usage of <code>getImageData()</code> on any externally hosted image, but (largely thanks to the contributions of John Schulz, using <a href="http://www.maxnov.com/getimagedata">Max Novakovic's getImageData API</a>) Close Pixelate has built-in methods to get around this security feature.</p>
-
-      <pre><code>&lt;img id="portrait-image" src="img/portrait.jpg" /&gt;</code></pre>
-
-      <p>Use the <code>closePixelate</code> method on the image in your script. You can control the output of the rendering by passing in an array of options.</p>
-
-      <pre><code>function init() {
-  document.getElementById('portrait-image').closePixelate([
-    { resolution : 24 },
-    { shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }
-  ]);
-}
-window.addEventListener( 'load', docReady, false);</code></pre>
-
-      <p>Each set of options is an object representing one re-rendering the original image.</p>
-
-      <p>The first set of options, <code>{ resolution : 24 }</code> directs the script to render a big square pixel every 24 actual pixels. The script uses the exact color value of the one single actual pixel in the center of the big square pixel. </p>
-
-      <p>The second set of options uses all available parameters: <code>{ shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }</code> Like the first set, the resolution is 24 pixels. The shape of the pixels will be circles. The size of each circle is 16 pixels (each circle will have a radius of 8 pixels). The circles will placed down and to the right by 12 pixels in both directions. Finally all the circles will have an opacity of 0.5, or 50%.</p>
     </div> <!-- .copy -->
-
-    <div class="examples">
-      <img src="img/stanley-small.jpg" />
-      <img id="example2" src="img/stanley-small.jpg" />
-      <img id="example3" src="img/stanley-small.jpg" />
-    </div>
 
   </div> <!-- #content -->
 
