@@ -69,15 +69,46 @@
       border: 1px solid #222;
     }
 
+    pre {
+      padding: 10px;
+    }
+
+    code { padding: 2px; }
+
+    pre code { padding: 0; }
+
     pre, code {
       font-family: Monaco, monospace;
       font-size: 12px;
+      background: #222;
     }
 
     .portrait {
       background-color: black;
       display: block;
       margin: 0 auto 1.0em;
+    }
+
+    a.button {
+      background-color: #E58;
+      color: white;
+      padding: 0.4em 10px;
+      border-radius: 0.9em;
+      background-image: -webkit-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:    -moz-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:     -ms-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:      -o-linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      background-image:         linear-gradient( top, hsla( 0, 0%, 0%, 0 ), hsla( 0, 0%, 0%, 0.4 ) );
+      box-shadow: 0 2px 4px hsla( 0, 0%, 0%, 0.4 );
+    }
+
+    a.button:hover {
+      background-color: #F69;
+    }
+
+    a.button:active {
+      background-color: #D37;
+      box-shadow: inset 0 2px 4px hsla( 0, 0%, 0%, 0.6 );
     }
 
   </style>
@@ -96,7 +127,14 @@
 
       <p>This project lives on GitHub where you can download the script and these examples.</p>
 
-      <p><a class="button" href="http://github.com/desandro/close-pixelate">View Close Pixelate on GitHub</a></p>
+      <p><a class="button" href="http://github.com/desandro/close-pixelate">Close Pixelate on GitHub</a> <a class="button" href="https://raw.github.com/desandro/close-pixelate/master/close-pixelate.js">Download close-pixelate.js</a></p>
+
+      <h2>Contributors</h2>
+
+      <ul>
+      <li><a href="http://desandro.com">David DeSandro</a></li>
+      <li><a href="http://twitter.com/jfsiii">John Schulz</a></li>
+      </ul>
 
       <h2>The Pixelator</h2>
 
