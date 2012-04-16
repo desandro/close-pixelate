@@ -29,17 +29,21 @@ Example Code
 
 This script works on any _same domain_ image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on cross-domain images.
 
-    <img id="portrait-image" src="img/portrait.jpg" />
+``` html
+<img id="portrait-image" src="img/portrait.jpg" />
+```
 
 Use the `closePixelate` method on the image in your script. You can control the output of the rendering by passing in an array of options.
 
-    var docReady = function() {
-      document.getElementById('portrait-image').closePixelate([
-        { resolution : 24 },
-        { shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }
-      ]);
-    };
-    window.addEventListener( 'DOMContentLoaded', docReady, false);
+``` js
+function init() {
+  document.getElementById('portrait-image').closePixelate([
+    { resolution : 24 },
+    { shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }
+  ]);
+};
+window.addEventListener( 'load', init, false);
+```
 
 Each set of options is an object representing one re-rendering the original image.
 
