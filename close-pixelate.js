@@ -1,5 +1,5 @@
 /*!
- * Close Pixelate v2.0.00
+ * Close Pixelate v2.0.00 beta
  * http://desandro.com/resources/close-pixelate/
  * 
  * Developed by
@@ -29,6 +29,7 @@ function isObject( obj ) {
   return Object.prototype.toString.call( obj ) === "[object Object]"
 }
 
+var console = window.console
 
 // check for canvas support
 var canvas = document.createElement('canvas')
@@ -64,7 +65,15 @@ ClosePixelation.prototype.render = function( options ) {
   // draw image on canvas
   this.ctx.drawImage( this.img, 0, 0 )
   // get imageData
-  this.imgData = this.ctx.getImageData( 0, 0, w, h ).data
+
+  try {
+    this.imgData = this.ctx.getImageData( 0, 0, w, h ).data
+  } catch ( error ) {
+    if ( console ) {
+      console.error( error )
+    }
+    return
+  }
 
   this.ctx.clearRect( 0, 0, w, h )
 

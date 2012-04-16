@@ -236,7 +236,7 @@
     };
 
 
-    function docReady() {
+    function init() {
       for ( var key in pixelations ) {
         var img = document.getElementById( key ),
             options = pixelations[key];
@@ -248,7 +248,7 @@
     }
 
 
-    window.addEventListener( 'DOMContentLoaded', docReady, false);  
+    window.addEventListener( 'load', init, false);
   </script>
 
 </body>
