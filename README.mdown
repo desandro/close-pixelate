@@ -7,25 +7,22 @@ This project lives on GitHub at [github.com/desandro/close-pixelate](http://gith
 
 Take a look at what the script is capable of in [examples.html](examples.html)
 
-Contributors
-------------
+## Contributors
 
  - [David DeSandro](http://desandro.com)
  - [John Schulz](http://twitter.com/jfsiii)
 
-Options
--------
+## Options
 
 The function accepts an array of objects. Each object holds a set of options.
 
- - `resolution` : The distance in pixels between rendered pixels. Required.
+ - `resolution` : The distance in pixels between rendered pixels. **Required.**
  - `shape` : The shape of the pixel. Accepts `square`, `circle`, and `diamond`. Optional. Defaults to `square`.
  - `size` : The size in pixels of the rendered pixel. Optional. Defaults to value of `resolution`.
  - `offset` : Offset in pixels. Optional. Defaults to `0`. Can be a single value `15` for a diagonal offset, or an array or object for X/Y pairs: `[ 15, 5 ]` or `{ x: 15, y: 5 }`.
  - `alpha` : A decimal value for the opacity of the rendering. Optional. Defaults to `1`.
  
-Example Code
-------------
+## Example Code
 
 This script works on any _same domain_ image. [According to the HTML5 spec](http://dev.w3.org/html5/spec/the-canvas-element.html#security-with-canvas-elements), browsers prevent the usage of `getImageData()` on cross-domain images.
 
@@ -50,3 +47,24 @@ Each set of options is an object representing one re-rendering the original imag
 The first set of options, `{ resolution : 24 }` directs the script to render a big square pixel every 24 actual pixels. The script uses the exact color value of the one single actual pixel in the center of the big square pixel. 
 
 The second set of options uses all available parameters: `{ shape : 'circle', resolution : 24, size: 16, offset: 12, alpha: 0.5 }` Like the first set, the resolution is 24 pixels. The shape of the pixels will be circles. The size of each circle is 16 pixels (each circle will have a radius of 8 pixels). The circles will placed down and to the right by 12 pixels in both directions. Finally all the circles will have an opacity of 0.5, or 50%.
+
+## Constructor and methods
+
+``` js
+var img = document.getElementById('portrait-img');
+// create a new Close Pixelation instance with ClosePixelation
+// requires two arguments: the original image element
+// and an array of options
+var myPixelation = new ClosePixelation( img, [
+  { resolution : 24 }
+]);
+// re-render the canvas with different options
+myPixelation.render([
+  { resolution: 32 },
+  { resolution: 16, shape: 'circle', offset: 8 }
+]);
+// render a single option-set on top
+myPixelation.renderClosePixels({
+  resolution: 48, alpha: 0.5
+});
+```
