@@ -3,7 +3,7 @@ Close Pixelate
 
 Inspired by American portrait painter Chuck Close, this script converts an image into a pixelated version using an HTML5 canvas element. It's basically a simple demo for canvas' [imageData](https://developer.mozilla.org/En/HTML/Canvas/Pixel_manipulation_with_canvas) functionality. 
 
-[**desandro.github.com/close-pixelate**](http://desandro.github.com/close-pixelate)
+[**close-pixelate.desandro.com**](http://close-pixelate.desandro.com)
 
 ## Contributors
 
